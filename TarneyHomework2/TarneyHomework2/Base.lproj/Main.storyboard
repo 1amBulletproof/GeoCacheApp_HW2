@@ -117,13 +117,13 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GEOCA$H: Find the Buried $$$" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9q3-mE-ZjL">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MARVEL: Find the Character" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9q3-mE-ZjL">
                                 <rect key="frame" x="54" y="34" width="307" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="307" id="aoz-VF-m6P"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="20"/>
-                                <color key="textColor" red="7.2827775420905016e-05" green="0.48965754533678751" blue="0.00011298082796293078" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="textColor" red="0.78697781735751282" green="0.21232962003354847" blue="0.22367895149285233" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="707-1w-YiT">
@@ -196,16 +196,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SPECIFIC ITEM" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ihU-mc-lm8">
-                                <rect key="frame" x="135" y="40" width="145" height="24"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="145" id="bsG-y0-XUf"/>
-                                    <constraint firstAttribute="height" constant="24" id="zuj-xM-WyT"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="20"/>
-                                <color key="textColor" red="7.2827775420000005e-05" green="0.4896575453" blue="0.000112980828" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="alert_something_broke" translatesAutoresizingMaskIntoConstraints="NO" id="YKc-oq-GIb">
                                 <rect key="frame" x="20" y="72" width="374" height="296"/>
                                 <constraints>
@@ -287,6 +277,16 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Character Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ihU-mc-lm8">
+                                <rect key="frame" x="106" y="40" width="210" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="210" id="bsG-y0-XUf"/>
+                                    <constraint firstAttribute="height" constant="24" id="zuj-xM-WyT"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="20"/>
+                                <color key="textColor" red="0.78697781739999995" green="0.21232962" blue="0.2236789515" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -296,7 +296,7 @@
                             <constraint firstItem="yGD-tZ-bFO" firstAttribute="leading" secondItem="fgc-rY-iss" secondAttribute="leading" constant="26" id="83w-hT-QFV"/>
                             <constraint firstItem="LMn-PE-82L" firstAttribute="top" secondItem="yGD-tZ-bFO" secondAttribute="bottom" constant="8" id="9Vr-wO-Z7w"/>
                             <constraint firstItem="RMb-mO-HGt" firstAttribute="leading" secondItem="0sj-kS-fg4" secondAttribute="trailing" constant="25" id="9vA-hP-M7K"/>
-                            <constraint firstItem="ihU-mc-lm8" firstAttribute="centerX" secondItem="fgc-rY-iss" secondAttribute="centerX" id="KLf-Ts-CbK"/>
+                            <constraint firstItem="ihU-mc-lm8" firstAttribute="centerX" secondItem="fgc-rY-iss" secondAttribute="centerX" constant="4" id="KLf-Ts-CbK"/>
                             <constraint firstItem="fgc-rY-iss" firstAttribute="bottom" secondItem="Edh-xt-POp" secondAttribute="bottom" constant="23" id="KxB-Lf-Bax"/>
                             <constraint firstItem="tV5-yc-cst" firstAttribute="top" secondItem="0sj-kS-fg4" secondAttribute="bottom" constant="12" id="Sah-Et-iCT"/>
                             <constraint firstItem="tV5-yc-cst" firstAttribute="centerX" secondItem="fgc-rY-iss" secondAttribute="centerX" constant="4.3333333333333144" id="VJc-Yk-BNX"/>

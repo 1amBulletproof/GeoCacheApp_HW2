@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-public enum geoCacheStatus {
+public enum GeoCacheStatus {
     case FOUND
     case NOTFOUND
 }
@@ -23,7 +23,8 @@ public class GeoCacheItem: NSObject, MKAnnotation {
     public var locationName:String!
     public var coordinate: CLLocationCoordinate2D
     public var imagePath:String?
-    public var found:geoCacheStatus?
+    public var found:GeoCacheStatus?
+    public var foundDate:Date?
     
     public init(title:String, locationName:String, coordinate: CLLocationCoordinate2D)
     {

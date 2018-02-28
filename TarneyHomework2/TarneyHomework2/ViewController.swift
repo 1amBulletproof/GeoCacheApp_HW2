@@ -36,6 +36,8 @@ class ViewController: UIViewController, MKMapViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        geoCacheManager.initializeGeoCacheItems()
 
         locationManager.requestWhenInUseAuthorization()
         mkMapView.delegate = self
@@ -44,7 +46,9 @@ class ViewController: UIViewController, MKMapViewDelegate {
         
         //TODO: make 10 annotations from 10 GeoCacheItems which should not themselves be Annotations
         
-        mkMapView.addAnnotation(geoCacheManager.geoCacheItems[0].item)
+        for geoCache in geoCacheManager.geoCacheItems {
+            mkMapView.addAnnotation(geoCache)
+        }
 //        let location = CLLocation(latitude: 39.160926, longitude: -76.899872) //APL Bldg 200
 //        let building200Location = GeoCacheItem(title: "Building 200", locationName: "South Campus", coordinate: CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude))
 //        mkMapView.addAnnotation(building200Location)

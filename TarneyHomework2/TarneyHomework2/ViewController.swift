@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import GeoCacheFramework
 
-class ViewController: UIViewController, MKMapViewDelegate {
+class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
     
     //*****FYI*******
     //MKMapItem = geographic location & interesting data for that location
@@ -39,7 +39,9 @@ class ViewController: UIViewController, MKMapViewDelegate {
         
         geoCacheManager.initializeGeoCacheItems()
 
+        locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
+
         mkMapView.delegate = self
         mkMapView.showsUserLocation = true
         locationManager.startUpdatingLocation()
@@ -47,43 +49,61 @@ class ViewController: UIViewController, MKMapViewDelegate {
         for geoCache in geoCacheManager.geoCacheItems {
             mkMapView.addAnnotation(geoCache)
         }
-        
-//        let location = CLLocation(latitude: 39.160926, longitude: -76.899872) //APL Bldg 200
-//        let building200Location = GeoCacheItem(title: "Building 200", locationName: "South Campus", coordinate: CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude))
-//        mkMapView.addAnnotation(building200Location)
-
-
-//        centerMapOnLocation(location: geoCacheManager.geoCacheItems[0].item.coordinate)
     }
-    
-
     
     // ADD STUFF TO ANNOTATION (like button and/or lat/lon)
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        
         if let annotation = annotation as? GeoCacheItem
         {
-            print("annotaiton is GeoCacheItem")
             let identifier = "pin"
             var view: MKPinAnnotationView
             if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView
             {
-                print("dequeed")
                 dequeuedView.annotation = annotation
                 view = dequeuedView
+//                print("reuse PIN")
+//                if (annotation.found == GeoCacheStatus.FOUND) {
+//                    view.pinTintColor = UIColor.green
+//                } else {
+//                    view.pinTintColor = UIColor.red
+//                }
             }
             else
             {
-                print("new View")
                 view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
                 view.canShowCallout = true
+                if (annotation.found == GeoCacheStatus.FOUND) {
+                    view.pinTintColor = UIColor.green
+                } else {
+                    view.pinTintColor = UIColor.red
+                }
                 view.calloutOffset = CGPoint(x: -5, y: 5)
                 view.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+                view.leftCalloutAccessoryView = UILabel()
             }
             return view
         }
-        print("not a GeoCacheItem?!")
         return nil
+    }
+    
+    
+    
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        if control == view.rightCalloutAccessoryView {
+            performSegue(withIdentifier: "detailViewSegue", sender: view)
+        }
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "detailViewSegue") {
+            //case sender to GeoCacheItem!?
+            if let nextViewController = segue.destination as? DetailViewController {
+                let annotationView = sender as! MKPinAnnotationView
+                nextViewController.geoCacheItem = annotationView.annotation as? GeoCacheItem
+                nextViewController.pinView = annotationView
+                //TODO snapshot here?!
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -145,13 +165,8 @@ class ViewController: UIViewController, MKMapViewDelegate {
 
 
     
-/*SEGUE FROM ANNOTATION BUTTON
- func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-        if control == view.rightCalloutAccessoryView {
-            performSegueWithIdentifier("toTheMoon", sender: view)
-        }
-    }
- 
+
+ /*
  override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
      if (segue.identifier == "toTheMoon" )
      {
@@ -202,7 +217,12 @@ class ViewController: UIViewController, MKMapViewDelegate {
  */
 
 
+//        let location = CLLocation(latitude: 39.160926, longitude: -76.899872) //APL Bldg 200
+//        let building200Location = GeoCacheItem(title: "Building 200", locationName: "South Campus", coordinate: CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude))
+//        mkMapView.addAnnotation(building200Location)
 
+
+//        centerMapOnLocation(location: geoCacheManager.geoCacheItems[0].item.coordinate)
  
  
  

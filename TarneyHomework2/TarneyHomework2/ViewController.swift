@@ -44,24 +44,47 @@ class ViewController: UIViewController, MKMapViewDelegate {
         mkMapView.showsUserLocation = true
         locationManager.startUpdatingLocation()
         
-        //TODO: make 10 annotations from 10 GeoCacheItems which should not themselves be Annotations
-        
         for geoCache in geoCacheManager.geoCacheItems {
             mkMapView.addAnnotation(geoCache)
         }
+        
 //        let location = CLLocation(latitude: 39.160926, longitude: -76.899872) //APL Bldg 200
 //        let building200Location = GeoCacheItem(title: "Building 200", locationName: "South Campus", coordinate: CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude))
 //        mkMapView.addAnnotation(building200Location)
-//
+
+
 //        centerMapOnLocation(location: geoCacheManager.geoCacheItems[0].item.coordinate)
     }
     
-//    func centerMapOnLocation(location: CLLocation)
-//    {
-//        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, regionRadius*2.0, regionRadius*2.0)
-//        mkMapView.setRegion(coordinateRegion, animated: true)
-//    }
+
     
+    // ADD STUFF TO ANNOTATION (like button and/or lat/lon)
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        
+        if let annotation = annotation as? GeoCacheItem
+        {
+            print("annotaiton is GeoCacheItem")
+            let identifier = "pin"
+            var view: MKPinAnnotationView
+            if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView
+            {
+                print("dequeed")
+                dequeuedView.annotation = annotation
+                view = dequeuedView
+            }
+            else
+            {
+                print("new View")
+                view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+                view.canShowCallout = true
+                view.calloutOffset = CGPoint(x: -5, y: 5)
+                view.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+            }
+            return view
+        }
+        print("not a GeoCacheItem?!")
+        return nil
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -69,6 +92,8 @@ class ViewController: UIViewController, MKMapViewDelegate {
     }
 
 }
+
+
 
  
 ///* Current Location */
@@ -117,30 +142,8 @@ class ViewController: UIViewController, MKMapViewDelegate {
      }
  */
     
-/* ADD STUFF TO ANNOTATION (like button and/or lat/lon)
- func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
- 
-    if let annotation = annotation as? APLLocation
-    {
-        let identifier = "pin"
-        var view: MKPinAnnotationView
-        if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView
-        {
-            dequeuedView.annotation = annotation
-            view = dequeuedView
-        }
-        else
-        {
-            view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-            view.canShowCallout = true
-            view.calloutOffset = CGPoint(x: -5, y: 5)
-            view.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
-        }
-        return view
-    }
-    return nil
- }
- */
+
+
     
 /*SEGUE FROM ANNOTATION BUTTON
  func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
@@ -190,6 +193,12 @@ class ViewController: UIViewController, MKMapViewDelegate {
  
     })
  }
+ 
+ //    func centerMapOnLocation(location: CLLocation)
+ //    {
+ //        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, regionRadius*2.0, regionRadius*2.0)
+ //        mkMapView.setRegion(coordinateRegion, animated: true)
+ //    }
  */
 
 

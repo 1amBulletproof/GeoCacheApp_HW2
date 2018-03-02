@@ -32,6 +32,8 @@ class DetailViewController: UIViewController {
         geoCacheLat.text = geoCacheItem!.coordinate.latitude.description
         geoCacheLon.text = geoCacheItem!.coordinate.longitude.description
         geoCacheDetail.text = geoCacheItem!.detail
+        print(geoCacheItem!.imagePath)
+        geoCacheImage.image = UIImage(named: geoCacheItem!.imagePath)
         
         if geoCacheItem!.found == GeoCacheStatus.NOTFOUND {
             geoCacheSwitch.isOn = false;
@@ -72,7 +74,8 @@ class DetailViewController: UIViewController {
     }
     
 
-    /*
+    //TODO: prepareForSegue BACK to MainViewController ("ViewController")
+    //- Allows updating the labels in the MainView for however many found
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation

@@ -21,17 +21,16 @@ public class GeoCacheItem: NSObject, MKAnnotation {
     //TODO: need image representing geoCache (or string name anyway)
     public var title:String?
     public var detail:String?
-    public var locationName:String!
     public var coordinate: CLLocationCoordinate2D
-    public var imagePath:String?
+    public var imagePath:String = "alert_something_broke"
     public var found:GeoCacheStatus?
     public var foundDate:Date?
     
-    public init(title:String, detail:String, locationName:String, coordinate: CLLocationCoordinate2D)
+    public init(imagePath:String, title:String, detail:String, coordinate: CLLocationCoordinate2D)
     {
+        self.imagePath = imagePath
         self.title = title
         self.detail = detail
-        self.locationName = locationName
         self.coordinate = coordinate
         self.found = .NOTFOUND
         

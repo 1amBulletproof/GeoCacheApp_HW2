@@ -19,53 +19,53 @@ public class GeoCacheManager: NSObject {
     
     public func initializeGeoCacheItems() {
         
-        let strangeLocation = CLLocation(latitude: 40.729098, longitude: -74.000577)
-        let strangeGeoCache = GeoCacheItem(title: "Dr. Strange", detail: "Sorcerer Supreme. Master of the mystical Arts. Wears a cape and crazy hair-do.", locationName: "NYC Sanctum",
+        let strangeLocation = CLLocation(latitude: 40.72909, longitude: -74.00057)
+        let strangeGeoCache = GeoCacheItem(imagePath: "drStrange", title: "Dr. Strange", detail: "Sorcerer Supreme. Master of the mystical Arts. Wears a cape and crazy hair-do.",
                                            coordinate: CLLocationCoordinate2DMake(strangeLocation.coordinate.latitude, strangeLocation.coordinate.longitude))
         geoCacheItems.append(strangeGeoCache)
 
-        let msMarvelLocation = CLLocation(latitude: 42.349034, longitude: -71.066447)
-        let msMarvelGeoCache = GeoCacheItem(title: "Ms Marvel",  detail: "Ms Marvel, or Carol Danvers, packs a mean punch. If you are kree, make sure to avoid!", locationName: "Boston",
+        let msMarvelLocation = CLLocation(latitude: 42.34903, longitude: -71.06644)
+        let msMarvelGeoCache = GeoCacheItem(imagePath: "msMarvel", title: "Ms Marvel",  detail: "Ms Marvel, or Carol Danvers, packs a mean punch. If you are kree, make sure to avoid!",
                                            coordinate: CLLocationCoordinate2DMake(msMarvelLocation.coordinate.latitude, msMarvelLocation.coordinate.longitude))
         geoCacheItems.append(msMarvelGeoCache)
 
         let antManLocation = CLLocation(latitude: 25.718211, longitude: -80.2694)
-        let antManGeoCache = GeoCacheItem(title: "Ant Man",  detail: "Pym can shrink to the size of ants, which is why he's called Ant-Man! Yeah, not the best name, but still pretty cool.", locationName: "Coral Gables, FL (probably jail)",
+        let antManGeoCache = GeoCacheItem(imagePath: "antMan", title: "Ant Man",  detail: "Pym can shrink to the size of ants, which is why he's called Ant-Man! Yeah, not the best name...",
                                            coordinate: CLLocationCoordinate2DMake(antManLocation.coordinate.latitude, antManLocation.coordinate.longitude))
         geoCacheItems.append(antManGeoCache)
         
-        let ironManLocation = CLLocation(latitude: 34.005115, longitude: -118.806265)
-        let ironManGeoCache = GeoCacheItem(title: "Iron Man", detail: "Billionaire, philanthropist, playboy...and that's just when he's outside his suit of armor!", locationName: "Malibu w/Jarvis",
+        let ironManLocation = CLLocation(latitude: 34.00511, longitude: -118.80626)
+        let ironManGeoCache = GeoCacheItem(imagePath: "ironMan", title: "Iron Man", detail: "Billionaire, philanthropist, playboy...and that's just when he's outside his suit of armor!",
                                            coordinate: CLLocationCoordinate2DMake(ironManLocation.coordinate.latitude, ironManLocation.coordinate.longitude))
         geoCacheItems.append(ironManGeoCache)
         
-        let spiderManLocation = CLLocation(latitude: 40.718940, longitude: -73.845849)
-        let spiderManGeoCache = GeoCacheItem(title: "Spider Man", detail: "He's just looking out for the little guy. His sense of style might be lame but his powers aren't!", locationName: "Queens",
+        let spiderManLocation = CLLocation(latitude: 40.71894, longitude: -73.84584)
+        let spiderManGeoCache = GeoCacheItem(imagePath: "spiderMan", title: "Spider Man", detail: "He's just looking out for the little guy. His sense of style might be lame but his powers aren't!",
                                            coordinate: CLLocationCoordinate2DMake(spiderManLocation.coordinate.latitude, spiderManLocation.coordinate.longitude))
         geoCacheItems.append(spiderManGeoCache)
         
-        let starLordLocation = CLLocation(latitude: 38.4, longitude: -92.5)
-        let starLordGeoCache = GeoCacheItem(title: "Star-Lord", detail: "Mischevious, quick-witted, and always ready to party. Just don't take his mix-tape.", locationName: "Missouri",
+        let starLordLocation = CLLocation(latitude: 38.4364, longitude: -92.5197)
+        let starLordGeoCache = GeoCacheItem(imagePath: "starLord", title: "Star-Lord", detail: "Mischevious, quick-witted, and always ready to party. Just don't take his mix-tape.",
                                            coordinate: CLLocationCoordinate2DMake(starLordLocation.coordinate.latitude, starLordLocation.coordinate.longitude))
         geoCacheItems.append(starLordGeoCache)
         
-        let cptAmericaLocation = CLLocation(latitude: 40.6535, longitude: -73.944321)
-        let cptAmericaGeoCache = GeoCacheItem(title: "Captain America", detail: "Just a kid from Brooklyn.", locationName: "Brooklyn",
+        let cptAmericaLocation = CLLocation(latitude: 40.653, longitude: -73.94432)
+        let cptAmericaGeoCache = GeoCacheItem(imagePath: "cptAmerica", title: "Captain America", detail: "Just a kid from Brooklyn.",
                                            coordinate: CLLocationCoordinate2DMake(cptAmericaLocation.coordinate.latitude, cptAmericaLocation.coordinate.longitude))
         geoCacheItems.append(cptAmericaGeoCache)
         
-        let hydraLocation = CLLocation(latitude: 38.889880, longitude: -77.009179)
-        let hydraGeoCache = GeoCacheItem(title: "Hydra HQ", detail: "Big fan of facism and tax breaks. HAIL HYDRA!", locationName: "The Capitol Building",
+        let hydraLocation = CLLocation(latitude: 38.88988, longitude: -77.00917)
+        let hydraGeoCache = GeoCacheItem(imagePath: "hydra", title: "Hydra HQ", detail: "Big fan of facism and tax breaks. HAIL HYDRA!",
                                            coordinate: CLLocationCoordinate2DMake(hydraLocation.coordinate.latitude, hydraLocation.coordinate.longitude))
         geoCacheItems.append(hydraGeoCache)
         
-        let killmongerLocation = CLLocation(latitude: 37.810218, longitude: -122.243576)
-        let killmongerGeoCache = GeoCacheItem(title: "Eric Killmonger", detail: "Has been waiting LITERALLY his whole life for this. Better hurry, he's known to burn the whole place down", locationName: "Oakland",
+        let killmongerLocation = CLLocation(latitude: 37.81021, longitude: -122.24357)
+        let killmongerGeoCache = GeoCacheItem(imagePath: "killmonger", title: "Eric Killmonger", detail: "Has been waiting LITERALLY his whole life for this. Better hurry, he's known to burn the whole place down", ,
                                            coordinate: CLLocationCoordinate2DMake(killmongerLocation.coordinate.latitude, killmongerLocation.coordinate.longitude))
         geoCacheItems.append(killmongerGeoCache)
         
-        let thanosLocation = CLLocation(latitude: 38.897676, longitude: -77.036573)
-        let thanosGeoCache = GeoCacheItem(title: "Thanos", detail: "Hiding under copious amounts of bronzer, Thanos is mostly mis-understood and just wants to 'Make the Galaxy Great Again'", locationName: "The White House",
+        let thanosLocation = CLLocation(latitude: 38.89767, longitude: -77.03657)
+        let thanosGeoCache = GeoCacheItem(imagePath: "thanos", title: "Thanos", detail: "Hiding under copious amounts of bronzer, Thanos just wants to 'Make the Galaxy Great Again'", 
                                            coordinate: CLLocationCoordinate2DMake(thanosLocation.coordinate.latitude, thanosLocation.coordinate.longitude))
         geoCacheItems.append(thanosGeoCache)
         

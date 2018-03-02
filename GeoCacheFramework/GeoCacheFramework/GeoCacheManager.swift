@@ -60,12 +60,12 @@ public class GeoCacheManager: NSObject {
         geoCacheItems.append(hydraGeoCache)
         
         let killmongerLocation = CLLocation(latitude: 37.81021, longitude: -122.24357)
-        let killmongerGeoCache = GeoCacheItem(imagePath: "killmonger", title: "Eric Killmonger", detail: "Has been waiting LITERALLY his whole life for this. Better hurry, he's known to burn the whole place down", ,
+        let killmongerGeoCache = GeoCacheItem(imagePath: "killmonger", title: "Eric Killmonger", detail: "Has been waiting LITERALLY his whole life for this. Better hurry, he's known to burn the whole place down",
                                            coordinate: CLLocationCoordinate2DMake(killmongerLocation.coordinate.latitude, killmongerLocation.coordinate.longitude))
         geoCacheItems.append(killmongerGeoCache)
         
         let thanosLocation = CLLocation(latitude: 38.89767, longitude: -77.03657)
-        let thanosGeoCache = GeoCacheItem(imagePath: "thanos", title: "Thanos", detail: "Hiding under copious amounts of bronzer, Thanos just wants to 'Make the Galaxy Great Again'", 
+        let thanosGeoCache = GeoCacheItem(imagePath: "thanos", title: "Thanos", detail: "Hiding under copious amounts of bronzer, Thanos just wants to 'Make the Galaxy Great Again'",
                                            coordinate: CLLocationCoordinate2DMake(thanosLocation.coordinate.latitude, thanosLocation.coordinate.longitude))
         geoCacheItems.append(thanosGeoCache)
         

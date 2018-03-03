@@ -37,6 +37,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print("WHAT ABOUT ME")
+        
         geoCacheManager.initializeGeoCacheItems()
 
         locationManager.delegate = self
@@ -51,8 +53,28 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        //TODO: viewWillAppear:
+        //1. geoCacheManager.getClosestUnfoundGeoCacheItem(myLocation)
+        //2. get directions to this item
+        //3. Update any UI necessary for found item using GeoCacheManager
+    }
+    
+    ///* Current Location - necessary to find the nearest geoCache*/
+    //    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    //        let latestLocation = locations[locations.count - 1]
+    //        print("lat = \(latestLocation.coordinate.latitude)")
+    //        print("lon = \(latestLocation.coordinate.longitude)")
+    //        print("alt = \(latestLocation.altitude)")
+    //
+    // /* DISTANCE CALC
+    // let distanceBetween = latestLocation.distance(from: startLocation)
+    // */
+    //    }
+    
     // ADD STUFF TO ANNOTATION (like button and/or lat/lon)
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+
         if let annotation = annotation as? GeoCacheItem
         {
             let identifier = "pin"
@@ -86,8 +108,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         return nil
     }
     
-    
-    
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         if control == view.rightCalloutAccessoryView {
             performSegue(withIdentifier: "detailViewSegue", sender: view)
@@ -101,6 +121,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                 let annotationView = sender as! MKPinAnnotationView
                 nextViewController.geoCacheItem = annotationView.annotation as? GeoCacheItem
                 nextViewController.pinView = annotationView
+                nextViewController.mapView = self.mkMapView
                 //TODO snapshot here?!
             }
         }
@@ -113,22 +134,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
 
 }
 
-
-
- 
-///* Current Location */
-//    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-//        let latestLocation = locations[locations.count - 1]
-//        print("lat = \(latestLocation.coordinate.latitude)")
-//        print("lon = \(latestLocation.coordinate.longitude)")
-//        print("alt = \(latestLocation.altitude)")
-//
-// /* DISTANCE CALC
-// let distanceBetween = latestLocation.distance(from: startLocation)
-// */
-//    }
-
-    
     
 /*  DIRECTIONS
      request.source = MKMapItem(placemark: MKPlacemark(coordinate: building200Location.coordinate, addressDictionary: nil))
@@ -161,70 +166,18 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         return MKOverlayRenderer()
      }
  */
-    
 
 
-    
 
- /*
- override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-     if (segue.identifier == "toTheMoon" )
-     {
-        var ikinciEkran = segue.destinationViewController as! DetailViewController
- 
-        ikinciEkran.tekelName = (sender as! MKAnnotationView).annotation!.title
-     }
- }
- */
-
-/* SNAPSHOT Function - SHOULD JUST BE DONE MANUALLY FOR EACH LOCATION and STORED WITH GeoCache OR computed On-The-Fly on prepare_for_segue?!
-
- func requestSnapshotData(mapView: MKMapView, completion: @escaping (NSData?, NSError?) -> ())
- {
-    let options = MKMapSnapshotOptions()
-    options.region = MKCoordinateRegionMake(CLLocationCoordinate2DMake(20, -70), MKCoordinateSpanMake(3, 3))
-    options.size = mapView.frame.size
-    options.scale = UIScreen.main.scale
- 
-    let snapshotter = MKMapSnapshotter(options: options)
-    snapshotter.start()
-    {
-    snapshot, error in
- 
-    let image = snapshot!.image
-    let data = UIImagePNGRepresentation(image)
-    completion(data as NSData?, nil)
-    }
- }
- 
- @IBAction func snapshotButtonPressed(_ sender: Any)
- {
-    self.requestSnapshotData(mapView: mkView, completion:
- {
-    (data, error) in
- 
-    let image = UIImage(data: data! as Data)
-    self.snapshotImageView.image = image
- 
-    })
- }
  
  //    func centerMapOnLocation(location: CLLocation)
  //    {
  //        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, regionRadius*2.0, regionRadius*2.0)
  //        mkMapView.setRegion(coordinateRegion, animated: true)
  //    }
- */
 
 
-//        let location = CLLocation(latitude: 39.160926, longitude: -76.899872) //APL Bldg 200
-//        let building200Location = GeoCacheItem(title: "Building 200", locationName: "South Campus", coordinate: CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude))
-//        mkMapView.addAnnotation(building200Location)
 
-
-//        centerMapOnLocation(location: geoCacheManager.geoCacheItems[0].item.coordinate)
- 
- 
  
  
  

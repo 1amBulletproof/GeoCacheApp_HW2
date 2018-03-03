@@ -97,8 +97,16 @@ public class GeoCacheManager: NSObject {
     }
 
     //function that returns the items in distnace order
-    public func getDistanceToCache(myLocation:CLLocation, cacheLocation:CLLocation) -> Double {
+    public func getDistanceToCache(givenLocation:CLLocation, cacheLocation:CLLocation) -> Double {
         return 0.0
+    }
+    
+    //function that returns the items in distnace order
+    public func getDistanceBetweenCoordinates(startCoordinate:CLLocationCoordinate2D, endCoordinate:CLLocationCoordinate2D) -> Double {
+        let startCoordinate = MKMapPointForCoordinate(startCoordinate)
+        let endCoordinate = MKMapPointForCoordinate(endCoordinate)
+        let distanceBetweenCoordinates = MKMetersBetweenMapPoints(startCoordinate, endCoordinate)
+        return distanceBetweenCoordinates.magnitude
     }
     
    

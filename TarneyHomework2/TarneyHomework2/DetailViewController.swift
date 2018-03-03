@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import GeoCacheFramework
 
-class DetailViewController: UIViewController {
+class DetailViewController: UIViewController, MKMapViewDelegate {
     
     @IBOutlet weak var geoCacheTitle: UILabel!
     @IBOutlet weak var geoCacheSnap: UIImageView!
@@ -23,16 +23,28 @@ class DetailViewController: UIViewController {
     
     //TODO: Need to implement a back button!
     var geoCacheItem:GeoCacheItem?
+    var mapView: MKMapView?
     var pinView:MKPinAnnotationView?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //Request snapshot w/closure to set it to image
+        self.requestSnapshotData(mapView: self.mapView!, completionHandler:
+            {
+                (mkMapSnapshot, error) in
+                print("In completionHandler")
+                if let image = mkMapSnapshot?.image {
+                    print("Got a snapshot!")
+                    self.geoCacheSnap.image = image
+                }
+            } )
+        
         geoCacheTitle.text = geoCacheItem!.title
         geoCacheLat.text = geoCacheItem!.coordinate.latitude.description
         geoCacheLon.text = geoCacheItem!.coordinate.longitude.description
         geoCacheDetail.text = geoCacheItem!.detail
-        print(geoCacheItem!.imagePath)
+
         geoCacheImage.image = UIImage(named: geoCacheItem!.imagePath)
         
         if geoCacheItem!.found == GeoCacheStatus.NOTFOUND {
@@ -44,6 +56,10 @@ class DetailViewController: UIViewController {
         }
         
         //TODO: snapshot here?
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        print("HOW ABOUT ME")
     }
     
     func setGeoCacheFoundDate(date:Date) {
@@ -76,13 +92,37 @@ class DetailViewController: UIViewController {
 
     //TODO: prepareForSegue BACK to MainViewController ("ViewController")
     //- Allows updating the labels in the MainView for however many found
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    //https://stackoverflow.com/questions/28788416/swift-prepareforsegue-with-navigation-controller
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
-    */
 
+
+
+/* SNAPSHOT Function - SHOULD JUST BE DONE MANUALLY FOR EACH LOCATION and STORED WITH GeoCache OR computed On-The-Fly on prepare_for_segue?!
+ */
+    func requestSnapshotData(mapView: MKMapView, completionHandler: @escaping (MKMapSnapshot?, Error?) -> ())
+    {
+        print("requestion a snapshot")
+        let snapShotOptions = MKMapSnapshotOptions()
+
+        let widthInMeters = 1000
+        let heightInMeters = 1000
+        snapShotOptions.region = MKCoordinateRegionMakeWithDistance(
+                geoCacheItem!.coordinate,
+                CLLocationDistance(widthInMeters),
+                CLLocationDistance(heightInMeters))
+
+        snapShotOptions.size = geoCacheSnap.frame.size
+        snapShotOptions.scale = UIScreen.main.scale
+ 
+        //Get SnapShot
+        let snapshotter = MKMapSnapshotter(options: snapShotOptions)
+        
+        //Use snapshot
+        snapshotter.start(completionHandler: completionHandler)
+    }
+ 
 }
+

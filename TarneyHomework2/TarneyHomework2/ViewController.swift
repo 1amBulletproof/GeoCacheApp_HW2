@@ -35,6 +35,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     let regionRadius:CLLocationDistance = 1000.0
     
     var userLocation:CLLocation?
+    var lastClosestGeo:GeoCacheItem?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,7 +57,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             mkMapView.addAnnotation(geoCache)
         }
         
-        self.requestDirections(toCache: geoCacheManager.geoCacheItems[0])
+//        self.requestDirections(toCache: geoCacheManager.geoCacheItems[0])
     }
     
     //Set values whenever view will appear
@@ -76,22 +77,35 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             lastItemFoundDate.text = formattedDate
         }
         
-        //TODO: viewWillAppear:
-        //***HANDLE DIRECTIONS***
-        //Just check if we currently have directions to a FOUND GEO and update accordingly?
-        //1. (OPTIONAL) geoCacheManager.getClosestUnfoundGeoCacheItem(myLocation)
-        //2. get directions to this item
-        //3. Update any UI necessary for found item using GeoCacheManager
-        //***
+        //Anytime the view is going to load (i.e. the only time a found state change is possible), get directions to closest UNFOUND geoCacheItem
+        //Gaurd this so that we wait for userLocation to be valid!
+        if let _ = self.userLocation {
+            geoCacheManager.sortGeoCacheItemsByDistance(givenLocation: self.userLocation!)
+            let closestGeoCacheItem = geoCacheManager.getClosestUnfoundGeoCache()
+            if closestGeoCacheItem != lastClosestGeo {
+                self.requestDirections(toCache: closestGeoCacheItem)
+                self.lastClosestGeo = closestGeoCacheItem
+            }
+        }
+
     }
+    
     
     //Update User Location
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         self.userLocation = locations[locations.count - 1]
-        geoCacheManager.setGeoCacheItemsSortedByDistance(givenLocation: self.userLocation!)
-        nearestGeoCacheItem.text = geoCacheManager.sortedGeoCacheItems![0].title
-        let distanceToNearestCache = Int(geoCacheManager.getDistanceToCacheInMiles(self.userLocation!, geoCacheManager.sortedGeoCacheItems![0]))
+        geoCacheManager.sortGeoCacheItemsByDistance(givenLocation: self.userLocation!)
+        nearestGeoCacheItem.text = geoCacheManager.sortedGeoCacheItems[0].title
+        let distanceToNearestCache = Int(geoCacheManager.getDistanceToCacheInMiles(self.userLocation!, geoCacheManager.sortedGeoCacheItems[0]))
         nearestGeoCacheDistance.text = String(distanceToNearestCache)
+        
+        //Get Directions to the closest unfound geo cache item!
+        //TODO: need to remove the old directions!?
+        let closestGeoCacheItem = geoCacheManager.getClosestUnfoundGeoCache()
+        if closestGeoCacheItem != lastClosestGeo {
+            self.requestDirections(toCache: closestGeoCacheItem)
+            self.lastClosestGeo = closestGeoCacheItem
+        }
     }
     
     // ADD STUFF TO ANNOTATION (like button and/or lat/lon)
@@ -105,12 +119,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             {
                 dequeuedView.annotation = annotation
                 view = dequeuedView
-//                print("reuse PIN")
-//                if (annotation.found == GeoCacheStatus.FOUND) {
-//                    view.pinTintColor = UIColor.green
-//                } else {
-//                    view.pinTintColor = UIColor.red
-//                }
             }
             else
             {
@@ -130,6 +138,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         return nil
     }
     
+    //Segue to detail view from annotation
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         if control == view.rightCalloutAccessoryView {
             performSegue(withIdentifier: "detailViewSegue", sender: view)
@@ -161,6 +170,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
 
     
     //Directions
+    //TODO: Need to find a way to STOP rendering the previous direction line
     func requestDirections(toCache: GeoCacheItem) {
         let request = MKDirectionsRequest()
         request.source = MKMapItem.forCurrentLocation()
@@ -179,6 +189,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         } )
     }
     
+    //TODO: Need to find a way to STOP rendering the previous direction line
     func showRoute(response: MKDirectionsResponse)
     {
         for route in response.routes {

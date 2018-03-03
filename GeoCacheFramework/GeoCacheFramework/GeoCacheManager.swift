@@ -12,10 +12,10 @@ import MapKit
 public class GeoCacheManager: NSObject {
     
     public var geoCacheItems: [GeoCacheItem] = []
-    public var sortedGeoCacheItems: [GeoCacheItem]?
+    public var sortedGeoCacheItems: [GeoCacheItem] = []
     public var lastGeoCacheItemFound: GeoCacheItem?
-    
-    //TODO: use CoreLocation stuff to get distances?
+    public let numberOfGeoCacheItems = 10
+
     
     public override init() {}
     
@@ -71,6 +71,7 @@ public class GeoCacheManager: NSObject {
                                            coordinate: CLLocationCoordinate2DMake(thanosLocation.coordinate.latitude, thanosLocation.coordinate.longitude))
         geoCacheItems.append(thanosGeoCache)
         
+        sortedGeoCacheItems = geoCacheItems
     }
     
     
@@ -97,30 +98,31 @@ public class GeoCacheManager: NSObject {
     }
     
     
-    public func setGeoCacheItemsSortedByDistance(givenLocation:CLLocation) {
+    //Sort the geo's by distance from a given location (presumably user location).
+    public func sortGeoCacheItemsByDistance(givenLocation:CLLocation) {
         //Woo naive sorting
-        self.sortedGeoCacheItems = self.geoCacheItems
-        for item in 0..<10 {
-            for idx in 1..<10 {
-                if getDistanceToCacheInMiles(givenLocation, sortedGeoCacheItems![idx-1]) >
-                    getDistanceToCacheInMiles(givenLocation, sortedGeoCacheItems![idx]) {
-                    let geoCacheItem1 = sortedGeoCacheItems![idx-1]
-                    let geoCacheItem2 = sortedGeoCacheItems![idx]
-                    sortedGeoCacheItems![idx-1] = geoCacheItem2
-                    sortedGeoCacheItems![idx] = geoCacheItem1
+        for item in 0 ..< numberOfGeoCacheItems {
+            for idx in 1 ..< numberOfGeoCacheItems {
+                if getDistanceToCacheInMiles(givenLocation, sortedGeoCacheItems[idx-1]) >
+                    getDistanceToCacheInMiles(givenLocation, sortedGeoCacheItems[idx]) {
+                    let geoCacheItem1 = sortedGeoCacheItems[idx-1]
+                    let geoCacheItem2 = sortedGeoCacheItems[idx]
+                    sortedGeoCacheItems[idx-1] = geoCacheItem2
+                    sortedGeoCacheItems[idx] = geoCacheItem1
                 }
             }
         }
     }
     
-    //function that returns the items in distnace order
-    public func getDistanceBetweenCoordinates(startCoordinate:CLLocationCoordinate2D, endCoordinate:CLLocationCoordinate2D) -> Double {
-        let startCoordinate = MKMapPointForCoordinate(startCoordinate)
-        let endCoordinate = MKMapPointForCoordinate(endCoordinate)
-        let distanceBetweenCoordinates = MKMetersBetweenMapPoints(startCoordinate, endCoordinate)
-        return distanceBetweenCoordinates.magnitude
+    //Get the closest UNFOUND geo (for directions!)
+    public func getClosestUnfoundGeoCache() -> GeoCacheItem {
+        for idx in 0 ..< numberOfGeoCacheItems {
+            if sortedGeoCacheItems[idx].found == .NOTFOUND {
+                return sortedGeoCacheItems[idx]
+            }
+        }
+        return sortedGeoCacheItems[0] //default case
     }
-    
    
 }
 

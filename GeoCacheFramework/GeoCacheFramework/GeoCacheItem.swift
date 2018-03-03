@@ -23,8 +23,17 @@ public class GeoCacheItem: NSObject, MKAnnotation {
     public var detail:String?
     public var coordinate: CLLocationCoordinate2D
     public var imagePath:String = "alert_something_broke"
-    public var found:GeoCacheStatus?
+    public var found:GeoCacheStatus? {
+        didSet {
+            print("Write to user defaults here!")
+        }
+    }
     public var foundDate:Date?
+    {
+        didSet {
+            print("Write to user defaults here!")
+        }
+    }
     
     public init(imagePath:String, title:String, detail:String, coordinate: CLLocationCoordinate2D)
     {

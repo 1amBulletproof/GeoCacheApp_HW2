@@ -12,17 +12,6 @@ import GeoCacheFramework
 
 class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
     
-    //*****FYI*******
-    //MKMapItem = geographic location & interesting data for that location
-    //Special MKMapItem represents user's location
-    //MKMapItem openMap(with:launchOptions:) can be used to launch Maps, prepopulated with an array of MKMapItems (AKA GEOCACHE ITEMS?!)
-    //MKAnnotationView can contain image label & disclosure button
-        //-deque them
-    //centerMapOnLocation(location: location)
-    //MKDirectionsRequest between MKMap Items
-    //MKMapSnapshotter generates an MKMapSnapshot based on the options
-    //****************
-    
     @IBOutlet weak var mkMapView: MKMapView!
     @IBOutlet weak var ratioFound: UILabel!
     @IBOutlet weak var nearestGeoCacheItem: UILabel!
@@ -34,7 +23,11 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     let geoCacheManager:GeoCacheManager = GeoCacheManager()
     let regionRadius:CLLocationDistance = 1000.0
     
-    var userLocation:CLLocation?
+    var userLocation:CLLocation? {
+        didSet {
+            print("Write to user defualts here")
+        }
+    }
     var lastClosestGeo:GeoCacheItem?
     
     override func viewDidLoad() {
@@ -45,7 +38,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         locationManager.requestWhenInUseAuthorization()
         if (CLLocationManager.authorizationStatus() == .authorizedWhenInUse)
         {
-            print("I have authorization powers")
             locationManager.delegate = self
             locationManager.startUpdatingLocation()
         }
@@ -98,8 +90,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         nearestGeoCacheItem.text = geoCacheManager.sortedGeoCacheItems[0].title
         let distanceToNearestCache = Int(geoCacheManager.getDistanceToCacheInMiles(self.userLocation!, geoCacheManager.sortedGeoCacheItems[0]))
         nearestGeoCacheDistance.text = String(distanceToNearestCache)
-        
-        print("location changed")
+
         //Get Directions to the closest unfound geo cache item!
         //TODO: need to remove the old directions!?
         let closestGeoCacheItem = geoCacheManager.getClosestUnfoundGeoCache()
@@ -154,6 +145,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         }
     }
 
+    //Setup DetailView Controller prior to Segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "detailViewSegue") {
             if let nextViewController = segue.destination as? DetailViewController {
@@ -166,9 +158,11 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         }
     }
     
+    //Render overlays on the map
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKPolyline
         {
+//            mapView.removeOverlays(mapView.overlays)
             let path = MKPolylineRenderer(overlay: overlay)
             path.strokeColor = UIColor.red.withAlphaComponent(0.5)
             path.lineWidth = 5;
@@ -182,9 +176,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     //TODO: Need to find a way to STOP rendering the previous direction line
     func requestDirections(toCache: GeoCacheItem) {
         let request = MKDirectionsRequest()
-        request.source = MKMapItem.forCurrentLocation()
-        
-        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: toCache.coordinate, addressDictionary: nil))
+        request.source = MKMapItem(placemark: MKPlacemark(coordinate: self.userLocation!.coordinate))
+        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: toCache.coordinate))
         request.requestsAlternateRoutes = false
         request.transportType = .automobile
         
@@ -198,9 +191,10 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         } )
     }
     
-    //TODO: Need to find a way to STOP rendering the previous direction line
+    //Add the lines to the map (blank out the last ones first!
     func showRoute(response: MKDirectionsResponse)
     {
+        mkMapView.removeOverlays(mkMapView.overlays)
         for route in response.routes {
             self.mkMapView.add(route.polyline, level: .aboveRoads)
         }

@@ -9,8 +9,17 @@
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
+		<key>GeocacheTodayExtension.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<true/>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
 		<key>TarneyHomework2.xcscheme</key>
 		<dict>
+			<key>isShown</key>
+			<true/>
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
@@ -18,6 +27,11 @@
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>A12FCEF12043375300B23C97</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A1B91B5A204B2C9E0000A685</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -17,7 +17,23 @@
 		A162A043204658FC00BF9FAA /* GeoCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16261E22043CD6100DF60FF /* GeoCacheManager.swift */; };
 		A162A0682046606600BF9FAA /* GeoCacheFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A162A0672046606600BF9FAA /* GeoCacheFramework.framework */; };
 		A162A0692046606600BF9FAA /* GeoCacheFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A162A0672046606600BF9FAA /* GeoCacheFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A1B91B5C204B2C9E0000A685 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A17EB5D8204B2BBF00D66318 /* NotificationCenter.framework */; };
+		A1B91B5F204B2C9E0000A685 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B91B5E204B2C9E0000A685 /* TodayViewController.swift */; };
+		A1B91B62204B2C9E0000A685 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1B91B60204B2C9E0000A685 /* MainInterface.storyboard */; };
+		A1B91B66204B2C9E0000A685 /* GeocacheTodayExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A1B91B5B204B2C9E0000A685 /* GeocacheTodayExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A1B91B6B204B2E0A0000A685 /* GeoCacheFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1B91B6C204B2E0A0000A685 /* GeoCacheFramework.framework */; };
+		A1B91B6D204B36A20000A685 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A12FCEFC2043375300B23C97 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A1B91B64204B2C9E0000A685 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A12FCEEA2043375300B23C97 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A1B91B5A204B2C9E0000A685;
+			remoteInfo = GeocacheTodayExtension;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		A162A06620465E5C00BF9FAA /* Embed Frameworks */ = {
@@ -29,6 +45,17 @@
 				A162A0692046606600BF9FAA /* GeoCacheFramework.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A17EB5E7204B2BBF00D66318 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A1B91B66204B2C9E0000A685 /* GeocacheTodayExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -46,6 +73,13 @@
 		A16261E22043CD6100DF60FF /* GeoCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoCacheManager.swift; sourceTree = "<group>"; };
 		A16261E42043E2C800DF60FF /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		A162A0672046606600BF9FAA /* GeoCacheFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GeoCacheFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A17EB5D8204B2BBF00D66318 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
+		A1B91B5B204B2C9E0000A685 /* GeocacheTodayExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = GeocacheTodayExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1B91B5E204B2C9E0000A685 /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
+		A1B91B61204B2C9E0000A685 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		A1B91B63204B2C9E0000A685 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A1B91B6A204B2D170000A685 /* GeocacheTodayExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GeocacheTodayExtension.entitlements; sourceTree = "<group>"; };
+		A1B91B6C204B2E0A0000A685 /* GeoCacheFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GeoCacheFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +91,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A1B91B58204B2C9E0000A685 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1B91B6B204B2E0A0000A685 /* GeoCacheFramework.framework in Frameworks */,
+				A1B91B5C204B2C9E0000A685 /* NotificationCenter.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -65,6 +108,8 @@
 			children = (
 				A162A0672046606600BF9FAA /* GeoCacheFramework.framework */,
 				A12FCEF42043375300B23C97 /* TarneyHomework2 */,
+				A1B91B5D204B2C9E0000A685 /* GeocacheTodayExtension */,
+				A17EB5D7204B2BBF00D66318 /* Frameworks */,
 				A12FCEF32043375300B23C97 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -73,6 +118,7 @@
 			isa = PBXGroup;
 			children = (
 				A12FCEF22043375300B23C97 /* TarneyHomework2.app */,
+				A1B91B5B204B2C9E0000A685 /* GeocacheTodayExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -94,6 +140,26 @@
 			path = TarneyHomework2;
 			sourceTree = "<group>";
 		};
+		A17EB5D7204B2BBF00D66318 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A1B91B6C204B2E0A0000A685 /* GeoCacheFramework.framework */,
+				A17EB5D8204B2BBF00D66318 /* NotificationCenter.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A1B91B5D204B2C9E0000A685 /* GeocacheTodayExtension */ = {
+			isa = PBXGroup;
+			children = (
+				A1B91B6A204B2D170000A685 /* GeocacheTodayExtension.entitlements */,
+				A1B91B5E204B2C9E0000A685 /* TodayViewController.swift */,
+				A1B91B60204B2C9E0000A685 /* MainInterface.storyboard */,
+				A1B91B63204B2C9E0000A685 /* Info.plist */,
+			);
+			path = GeocacheTodayExtension;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -105,15 +171,34 @@
 				A12FCEEF2043375300B23C97 /* Frameworks */,
 				A12FCEF02043375300B23C97 /* Resources */,
 				A162A06620465E5C00BF9FAA /* Embed Frameworks */,
+				A17EB5E7204B2BBF00D66318 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				A1B91B65204B2C9E0000A685 /* PBXTargetDependency */,
 			);
 			name = TarneyHomework2;
 			productName = TarneyHomework2;
 			productReference = A12FCEF22043375300B23C97 /* TarneyHomework2.app */;
 			productType = "com.apple.product-type.application";
+		};
+		A1B91B5A204B2C9E0000A685 /* GeocacheTodayExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A1B91B67204B2C9E0000A685 /* Build configuration list for PBXNativeTarget "GeocacheTodayExtension" */;
+			buildPhases = (
+				A1B91B57204B2C9E0000A685 /* Sources */,
+				A1B91B58204B2C9E0000A685 /* Frameworks */,
+				A1B91B59204B2C9E0000A685 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GeocacheTodayExtension;
+			productName = GeocacheTodayExtension;
+			productReference = A1B91B5B204B2C9E0000A685 /* GeocacheTodayExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -126,6 +211,15 @@
 				ORGANIZATIONNAME = "Brandon Tarney";
 				TargetAttributes = {
 					A12FCEF12043375300B23C97 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Manual;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
+					};
+					A1B91B5A204B2C9E0000A685 = {
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
@@ -150,6 +244,7 @@
 			projectRoot = "";
 			targets = (
 				A12FCEF12043375300B23C97 /* TarneyHomework2 */,
+				A1B91B5A204B2C9E0000A685 /* GeocacheTodayExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -162,6 +257,15 @@
 				A12FCF002043375300B23C97 /* LaunchScreen.storyboard in Resources */,
 				A12FCEFD2043375300B23C97 /* Assets.xcassets in Resources */,
 				A12FCEFB2043375300B23C97 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A1B91B59204B2C9E0000A685 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1B91B6D204B36A20000A685 /* Assets.xcassets in Resources */,
+				A1B91B62204B2C9E0000A685 /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -180,7 +284,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A1B91B57204B2C9E0000A685 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1B91B5F204B2C9E0000A685 /* TodayViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A1B91B65204B2C9E0000A685 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A1B91B5A204B2C9E0000A685 /* GeocacheTodayExtension */;
+			targetProxy = A1B91B64204B2C9E0000A685 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		A12FCEF92043375300B23C97 /* Main.storyboard */ = {
@@ -197,6 +317,14 @@
 				A12FCEFF2043375300B23C97 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		A1B91B60204B2C9E0000A685 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A1B91B61204B2C9E0000A685 /* Base */,
+			);
+			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -312,6 +440,7 @@
 		A12FCF052043375300B23C97 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = TarneyHomework2/TarneyHomework2.entitlements;
 				CODE_SIGN_STYLE = Manual;
@@ -330,6 +459,7 @@
 		A12FCF062043375300B23C97 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = TarneyHomework2/TarneyHomework2.entitlements;
 				CODE_SIGN_STYLE = Manual;
@@ -340,6 +470,42 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "57112093-63e6-41ff-a779-9d2d99417f0e";
 				PROVISIONING_PROFILE_SPECIFIER = Spring2018Hw2Dev;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A1B91B68204B2C9E0000A685 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = GeocacheTodayExtension/GeocacheTodayExtension.entitlements;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 4562Q5CQ46;
+				INFOPLIST_FILE = GeocacheTodayExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = edu.jhu.epp.spring2018.hw2.GeocacheTodayExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "810b7643-1124-47c9-963b-30158deccae0";
+				PROVISIONING_PROFILE_SPECIFIER = Spring2018HW2_Extension;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A1B91B69204B2C9E0000A685 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = GeocacheTodayExtension/GeocacheTodayExtension.entitlements;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 4562Q5CQ46;
+				INFOPLIST_FILE = GeocacheTodayExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = edu.jhu.epp.spring2018.hw2.GeocacheTodayExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "810b7643-1124-47c9-963b-30158deccae0";
+				PROVISIONING_PROFILE_SPECIFIER = Spring2018HW2_Extension;
+				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -362,6 +528,15 @@
 			buildConfigurations = (
 				A12FCF052043375300B23C97 /* Debug */,
 				A12FCF062043375300B23C97 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A1B91B67204B2C9E0000A685 /* Build configuration list for PBXNativeTarget "GeocacheTodayExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A1B91B68204B2C9E0000A685 /* Debug */,
+				A1B91B69204B2C9E0000A685 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -68,9 +68,9 @@ class DetailViewController: UIViewController, MKMapViewDelegate {
     @IBAction func geoCacheFound(_ sender: UISwitch) {
         if sender.isOn {
             geoCacheItem!.found = GeoCacheStatus.FOUND
-            print("setting geoCacheManager to have last item found")
+
             geoCacheManager!.lastGeoCacheItemFound = geoCacheItem
-            print(geoCacheItem!.title)
+
             let date = Date()
             geoCacheItem!.foundDate = date
             setGeoCacheFoundDate(date: date)

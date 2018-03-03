@@ -12,6 +12,8 @@ import MapKit
 public class GeoCacheManager: NSObject {
     
     public var geoCacheItems: [GeoCacheItem] = []
+    public var sortedGeoCacheItems: [GeoCacheItem]?
+    public var lastGeoCacheItemFound: GeoCacheItem?
     
     //TODO: use CoreLocation stuff to get distances?
     
@@ -71,7 +73,9 @@ public class GeoCacheManager: NSObject {
         
     }
     
-    public func getNumFound() -> Int {
+    
+    //Number of Items Found
+    public func getNumberOfGeoCacheFound() -> Int {
         var count = 0
         for geoCache in self.geoCacheItems {
             if (geoCache.found == .FOUND) {
@@ -81,24 +85,32 @@ public class GeoCacheManager: NSObject {
         return count
     }
     
-    //function to set and/or get the discovered quality of the GeoCacheItem
-    public func getStatus( forIndex: Int) -> GeoCacheStatus {
-        return .NOTFOUND;
+    //Total Number of items
+    public func getNumberOfGeoCacheItems() -> Int {
+        return geoCacheItems.count
     }
-    public func getStatus(forName:String) -> GeoCacheStatus {
-        return .NOTFOUND;
+
+    //Distance between two locationss
+    public func getDistanceToCacheInMiles(_ givenLocation:CLLocation, _ cacheItem:GeoCacheItem) -> Double {
+        let cacheLocation = CLLocation(coordinate: cacheItem.coordinate, altitude: 0.0, horizontalAccuracy: 1, verticalAccuracy: 1, timestamp: Date())
+        return (givenLocation.distance(from: cacheLocation) / 1609.34)
     }
     
-    public func setStatus( forIndex: Int, status:GeoCacheStatus) {
-
-    }
-    public func getStatus(forName:String, status:GeoCacheStatus) {
-
-    }
-
-    //function that returns the items in distnace order
-    public func getDistanceToCache(givenLocation:CLLocation, cacheLocation:CLLocation) -> Double {
-        return 0.0
+    
+    public func setGeoCacheItemsSortedByDistance(givenLocation:CLLocation) {
+        //Woo naive sorting
+        self.sortedGeoCacheItems = self.geoCacheItems
+        for item in 0..<10 {
+            for idx in 1..<10 {
+                if getDistanceToCacheInMiles(givenLocation, sortedGeoCacheItems![idx-1]) >
+                    getDistanceToCacheInMiles(givenLocation, sortedGeoCacheItems![idx]) {
+                    let geoCacheItem1 = sortedGeoCacheItems![idx-1]
+                    let geoCacheItem2 = sortedGeoCacheItems![idx]
+                    sortedGeoCacheItems![idx-1] = geoCacheItem2
+                    sortedGeoCacheItems![idx] = geoCacheItem1
+                }
+            }
+        }
     }
     
     //function that returns the items in distnace order

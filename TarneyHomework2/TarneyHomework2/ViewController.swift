@@ -28,49 +28,71 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     @IBOutlet weak var nearestGeoCacheItem: UILabel!
     @IBOutlet weak var nearestGeoCacheDistance: UILabel!
     @IBOutlet weak var lastItemFound: UILabel!
-    @IBOutlet weak var lastItemFoundDistance: UILabel!
+    @IBOutlet weak var lastItemFoundDate: UILabel!
     
     let locationManager = CLLocationManager()
     let geoCacheManager:GeoCacheManager = GeoCacheManager()
     let regionRadius:CLLocationDistance = 1000.0
     
+    var userLocation:CLLocation?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("WHAT ABOUT ME")
-        
         geoCacheManager.initializeGeoCacheItems()
 
-        locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
+        if (CLLocationManager.authorizationStatus() == .authorizedWhenInUse &&
+            CLLocationManager.significantLocationChangeMonitoringAvailable())
+        {
+            locationManager.delegate = self
+            locationManager.startMonitoringSignificantLocationChanges()
+        }
 
         mkMapView.delegate = self
         mkMapView.showsUserLocation = true
-        locationManager.startUpdatingLocation()
-        
+
         for geoCache in geoCacheManager.geoCacheItems {
             mkMapView.addAnnotation(geoCache)
         }
+        
+        self.requestDirections(toCache: geoCacheManager.geoCacheItems[0])
     }
     
+    //Set values whenever view will appear
     override func viewWillAppear(_ animated: Bool) {
+        //Ratio Found
+        let numberOfGeoCacheItems = String(geoCacheManager.getNumberOfGeoCacheItems())
+        let numberFound = String(geoCacheManager.getNumberOfGeoCacheFound())
+        let ratioText = "\(numberFound)/\(numberOfGeoCacheItems)"
+        ratioFound.text = ratioText
+        
+        //Last Item Found:
+        if let lastGeoCacheItem = geoCacheManager.lastGeoCacheItemFound {
+            lastItemFound.text = lastGeoCacheItem.title!
+            let formatter = DateFormatter()
+            formatter.dateFormat = "MM/dd/YYYY"
+            let formattedDate = formatter.string(from: lastGeoCacheItem.foundDate!)
+            lastItemFoundDate.text = formattedDate
+        }
+        
         //TODO: viewWillAppear:
-        //1. geoCacheManager.getClosestUnfoundGeoCacheItem(myLocation)
+        //***HANDLE DIRECTIONS***
+        //Just check if we currently have directions to a FOUND GEO and update accordingly?
+        //1. (OPTIONAL) geoCacheManager.getClosestUnfoundGeoCacheItem(myLocation)
         //2. get directions to this item
         //3. Update any UI necessary for found item using GeoCacheManager
+        //***
     }
     
-    ///* Current Location - necessary to find the nearest geoCache*/
-    //    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-    //        let latestLocation = locations[locations.count - 1]
-    //        print("lat = \(latestLocation.coordinate.latitude)")
-    //        print("lon = \(latestLocation.coordinate.longitude)")
-    //        print("alt = \(latestLocation.altitude)")
-    //
-    // /* DISTANCE CALC
-    // let distanceBetween = latestLocation.distance(from: startLocation)
-    // */
-    //    }
+    //Update User Location
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        self.userLocation = locations[locations.count - 1]
+        geoCacheManager.setGeoCacheItemsSortedByDistance(givenLocation: self.userLocation!)
+        nearestGeoCacheItem.text = geoCacheManager.sortedGeoCacheItems![0].title
+        let distanceToNearestCache = Int(geoCacheManager.getDistanceToCacheInMiles(self.userLocation!, geoCacheManager.sortedGeoCacheItems![0]))
+        nearestGeoCacheDistance.text = String(distanceToNearestCache)
+    }
     
     // ADD STUFF TO ANNOTATION (like button and/or lat/lon)
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -116,46 +138,17 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "detailViewSegue") {
-            //case sender to GeoCacheItem!?
             if let nextViewController = segue.destination as? DetailViewController {
                 let annotationView = sender as! MKPinAnnotationView
+                nextViewController.geoCacheManager = geoCacheManager
                 nextViewController.geoCacheItem = annotationView.annotation as? GeoCacheItem
                 nextViewController.pinView = annotationView
                 nextViewController.mapView = self.mkMapView
-                //TODO snapshot here?!
             }
         }
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-}
-
     
-/*  DIRECTIONS
-     request.source = MKMapItem(placemark: MKPlacemark(coordinate: building200Location.coordinate, addressDictionary: nil))
-     request.destination = MKMapItem(placemark: MKPlacemark(coordinate: klobysLocation.coordinate, addressDictionary: nil))
-     request.requestsAlternateRoutes = false
-     request.transportType = .walking
- 
-     let directions = MKDirections(request: request)
-     directions.calculate()
-     {
-            (response, error) in
-        guard let error = error else { self.showRoute(response: response!); return }
-     }
-     func showRoute(response: MKDirectionsResponse)
-        {
-            for route in response.routes
-        {
-        mkView.add(route.polyline, level: .aboveRoads)
-        }
-     }
-     
-     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKPolyline
         {
             let path = MKPolylineRenderer(overlay: overlay)
@@ -164,8 +157,46 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             return path
         }
         return MKOverlayRenderer()
-     }
- */
+    }
+
+    
+    //Directions
+    func requestDirections(toCache: GeoCacheItem) {
+        let request = MKDirectionsRequest()
+        request.source = MKMapItem.forCurrentLocation()
+        
+        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: toCache.coordinate, addressDictionary: nil))
+        request.requestsAlternateRoutes = false
+        request.transportType = .automobile
+        
+        let directions = MKDirections(request: request)
+        directions.calculate(completionHandler: {
+            (response, error) in
+            guard let error = error else {
+                self.showRoute(response: response!)
+                return
+            }
+        } )
+    }
+    
+    func showRoute(response: MKDirectionsResponse)
+    {
+        for route in response.routes {
+            self.mkMapView.add(route.polyline, level: .aboveRoads)
+        }
+    }
+   
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+}
+
+
+
+     
+
 
 
 

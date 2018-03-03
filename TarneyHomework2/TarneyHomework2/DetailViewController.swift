@@ -21,21 +21,19 @@ class DetailViewController: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var geoCacheFoundDate: UILabel!
     @IBOutlet weak var geoCacheSwitch: UISwitch!
     
-    //TODO: Need to implement a back button!
     var geoCacheItem:GeoCacheItem?
     var mapView: MKMapView?
     var pinView:MKPinAnnotationView?
+    var geoCacheManager:GeoCacheManager?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //Request snapshot w/closure to set it to image
+        //Request Snapshot w/ Handler Closure
         self.requestSnapshotData(mapView: self.mapView!, completionHandler:
             {
                 (mkMapSnapshot, error) in
-                print("In completionHandler")
                 if let image = mkMapSnapshot?.image {
-                    print("Got a snapshot!")
                     self.geoCacheSnap.image = image
                 }
             } )
@@ -47,6 +45,7 @@ class DetailViewController: UIViewController, MKMapViewDelegate {
 
         geoCacheImage.image = UIImage(named: geoCacheItem!.imagePath)
         
+        //Found Switch Default State
         if geoCacheItem!.found == GeoCacheStatus.NOTFOUND {
             geoCacheSwitch.isOn = false;
             geoCacheFoundDate.text = "          "
@@ -54,26 +53,25 @@ class DetailViewController: UIViewController, MKMapViewDelegate {
             setGeoCacheFoundDate( date:geoCacheItem!.foundDate!)
             geoCacheSwitch.isOn = true;
         }
-        
-        //TODO: snapshot here?
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        print("HOW ABOUT ME")
-    }
-    
+    //Helper Fcn
     func setGeoCacheFoundDate(date:Date) {
         let formatter = DateFormatter()
         formatter.dateFormat = "MM/dd/YYYY"
-        let result = formatter.string(from: date)
-        geoCacheFoundDate.text = result
+        let formattedDate = formatter.string(from: date)
+        self.geoCacheFoundDate.text = formattedDate
     }
+    
 
+    //'FOUND' SWITCH HANDLER
     @IBAction func geoCacheFound(_ sender: UISwitch) {
         if sender.isOn {
             geoCacheItem!.found = GeoCacheStatus.FOUND
+            print("setting geoCacheManager to have last item found")
+            geoCacheManager!.lastGeoCacheItemFound = geoCacheItem
+            print(geoCacheItem!.title)
             let date = Date()
-            print(Date())
             geoCacheItem!.foundDate = date
             setGeoCacheFoundDate(date: date)
             pinView!.pinTintColor = .green
@@ -84,27 +82,10 @@ class DetailViewController: UIViewController, MKMapViewDelegate {
         }
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
 
-    //TODO: prepareForSegue BACK to MainViewController ("ViewController")
-    //- Allows updating the labels in the MainView for however many found
-    //https://stackoverflow.com/questions/28788416/swift-prepareforsegue-with-navigation-controller
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-
-
-
-/* SNAPSHOT Function - SHOULD JUST BE DONE MANUALLY FOR EACH LOCATION and STORED WITH GeoCache OR computed On-The-Fly on prepare_for_segue?!
- */
+    //SNAPSHOT
     func requestSnapshotData(mapView: MKMapView, completionHandler: @escaping (MKMapSnapshot?, Error?) -> ())
     {
-        print("requestion a snapshot")
         let snapShotOptions = MKMapSnapshotOptions()
 
         let widthInMeters = 1000
@@ -122,6 +103,12 @@ class DetailViewController: UIViewController, MKMapViewDelegate {
         
         //Use snapshot
         snapshotter.start(completionHandler: completionHandler)
+    }
+    
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
  
 }

@@ -108,7 +108,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         }
     }
     
-    // ADD STUFF TO ANNOTATION (like button and/or lat/lon)
+    // Create Annotation (like button and/or lat/lon)
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
 
         if let annotation = annotation as? GeoCacheItem
@@ -119,6 +119,11 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             {
                 dequeuedView.annotation = annotation
                 view = dequeuedView
+                if (annotation.found == GeoCacheStatus.FOUND) {
+                    view.pinTintColor = UIColor.green
+                } else {
+                    view.pinTintColor = UIColor.red
+                }
             }
             else
             {

@@ -43,11 +43,11 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         geoCacheManager.initializeGeoCacheItems()
 
         locationManager.requestWhenInUseAuthorization()
-        if (CLLocationManager.authorizationStatus() == .authorizedWhenInUse &&
-            CLLocationManager.significantLocationChangeMonitoringAvailable())
+        if (CLLocationManager.authorizationStatus() == .authorizedWhenInUse)
         {
+            print("I have authorization powers")
             locationManager.delegate = self
-            locationManager.startMonitoringSignificantLocationChanges()
+            locationManager.startUpdatingLocation()
         }
 
         mkMapView.delegate = self
@@ -99,13 +99,17 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         let distanceToNearestCache = Int(geoCacheManager.getDistanceToCacheInMiles(self.userLocation!, geoCacheManager.sortedGeoCacheItems[0]))
         nearestGeoCacheDistance.text = String(distanceToNearestCache)
         
+        print("location changed")
         //Get Directions to the closest unfound geo cache item!
         //TODO: need to remove the old directions!?
         let closestGeoCacheItem = geoCacheManager.getClosestUnfoundGeoCache()
-        if closestGeoCacheItem != lastClosestGeo {
-            self.requestDirections(toCache: closestGeoCacheItem)
-            self.lastClosestGeo = closestGeoCacheItem
-        }
+        self.requestDirections(toCache: closestGeoCacheItem)
+        self.lastClosestGeo = closestGeoCacheItem
+
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error)
     }
     
     // Create Annotation (like button and/or lat/lon)

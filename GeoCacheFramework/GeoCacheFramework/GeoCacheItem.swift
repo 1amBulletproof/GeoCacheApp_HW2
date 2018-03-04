@@ -24,12 +24,20 @@ public class GeoCacheItem: NSObject, MKAnnotation {
         }
         set (newFoundValue) {
             userDefaults!.set(newFoundValue, forKey: "found\(self.id!)")
+            //If you are set to found, mark yourself as most recent item
+            if (newFoundValue == true) {
+                userDefaults!.set(self.id, forKey: "lastGeoFoundId")
+            }
         }
     }
     
     public var foundDate:String {
         get {
-            return userDefaults!.string(forKey: "foundDate\(self.id!)")!
+            if let foundDate = userDefaults!.string(forKey: "foundDate\(self.id!)") {
+                return foundDate
+            } else {
+                return "N/A"
+            }
         }
         set (newFoundDate) {
             return userDefaults!.set(newFoundDate, forKey: "foundDate\(self.id!)")
@@ -44,10 +52,6 @@ public class GeoCacheItem: NSObject, MKAnnotation {
         self.imagePath = imagePath
         self.title = title
         self.detail = detail
-
-        self.found = false
-        self.foundDate = ""
-        
 
     }
     

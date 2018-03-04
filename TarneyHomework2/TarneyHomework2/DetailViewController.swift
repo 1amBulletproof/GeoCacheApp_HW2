@@ -24,7 +24,6 @@ class DetailViewController: UIViewController, MKMapViewDelegate {
     var geoCacheItem:GeoCacheItem?
     var mapView: MKMapView?
     var pinView:MKPinAnnotationView?
-    var geoCacheManager:GeoCacheManager?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,7 +68,6 @@ class DetailViewController: UIViewController, MKMapViewDelegate {
     @IBAction func geoCacheFound(_ sender: UISwitch) {
         if sender.isOn {
             geoCacheItem!.found = true
-            geoCacheManager!.lastGeoCacheItemFound = geoCacheItem
             let formattedDate = getGeoCacheFoundDateAsString()
             geoCacheItem!.foundDate = formattedDate
             self.geoCacheFoundDate.text = formattedDate

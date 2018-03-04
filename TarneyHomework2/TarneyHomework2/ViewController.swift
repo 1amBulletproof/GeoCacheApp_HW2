@@ -23,29 +23,18 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     let geoCacheManager:GeoCacheManager = GeoCacheManager()
     let regionRadius:CLLocationDistance = 1000.0
     let userDefaults = UserDefaults.init(suiteName: "group.edu.jhu.epp.spring2018.hw2")
-    
-//     var centerGeoId:String?
-    
     var lastClosestGeo:GeoCacheItem?
     
     var userLocation:CLLocation? {
         didSet {
             let locationData = NSKeyedArchiver.archivedData(withRootObject: userLocation!)
             userDefaults!.set(locationData, forKey: "userLocation")
-            
-            //test reading user defaults
-//            if let tmpLocationData = userDefaults?.data(forKey: "userLocation") {
-//                if let myLocation:CLLocation = NSKeyedUnarchiver.unarchiveObject(with: tmpLocationData) as? CLLocation {
-//                    print("User Location Read from Defaults is \(myLocation)")
-//                }
-//            }
         }
     }
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         geoCacheManager.initializeGeoCacheItems()
 
         locationManager.requestWhenInUseAuthorization()
@@ -74,7 +63,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         ratioFound.text = ratioText
         
         //Last Item Found:
-        if let lastGeoCacheItem = geoCacheManager.lastGeoCacheItemFound {
+        if let lastGeoCacheItem = geoCacheManager.getLatestGeoCacheItem() {
             lastItemFound.text = lastGeoCacheItem.title!
             lastItemFoundDate.text = lastGeoCacheItem.foundDate
         }
@@ -160,7 +149,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         if (segue.identifier == "detailViewSegue") {
             if let nextViewController = segue.destination as? DetailViewController {
                 let annotationView = sender as! MKPinAnnotationView
-                nextViewController.geoCacheManager = geoCacheManager
                 nextViewController.geoCacheItem = annotationView.annotation as? GeoCacheItem
                 nextViewController.pinView = annotationView
                 nextViewController.mapView = self.mkMapView

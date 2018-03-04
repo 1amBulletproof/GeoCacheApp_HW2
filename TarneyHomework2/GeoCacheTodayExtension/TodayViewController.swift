@@ -37,9 +37,9 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     let userDefaults = UserDefaults.init(suiteName: "group.edu.jhu.epp.spring2018.hw2")
     var userLocation:CLLocation? //user defaults info
     var lastFoundGeoCacheItem:GeoCacheItem? //user defaults info
-    var geoCacheIndex1:  Int?
-    var geoCacheIndex2 : Int?
-    var geoCacheIndex3 : Int?
+    var geoCacheItem1 : GeoCacheItem?
+    var geoCacheItem2 : GeoCacheItem?
+    var geoCacheItem3 : GeoCacheItem?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,18 +63,16 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         
         //Get nearest 3 items (using the current location)
         geoCacheManager.sortGeoCacheItemsByDistance(givenLocation: self.userLocation!)
-        let geoCacheItem1 = geoCacheManager.sortedGeoCacheItems[0]
-        self.geoCacheIndex1 = geoCacheManager.getGeoCacheIndex(byTitle: geoCacheItem1.title!)
-        let geoCacheItem2 = geoCacheManager.sortedGeoCacheItems[1]
-        self.geoCacheIndex2 = geoCacheManager.getGeoCacheIndex(byTitle: geoCacheItem2.title!)
-        let geoCacheItem3 = geoCacheManager.sortedGeoCacheItems[2]
-        self.geoCacheIndex3 = geoCacheManager.getGeoCacheIndex(byTitle: geoCacheItem3.title!)
+        self.geoCacheItem1 = geoCacheManager.sortedGeoCacheItems[0]
+        self.geoCacheItem2 = geoCacheManager.sortedGeoCacheItems[1]
+        self.geoCacheItem3 = geoCacheManager.sortedGeoCacheItems[2]
+
         
         //Set UI componenets
-        closestGeoTitleLabel1.text = geoCacheItem1.title!
-        closestGeoDistance1.text = String(Int(geoCacheManager.getDistanceToCacheInMiles(self.userLocation!, geoCacheItem1)))
+        closestGeoTitleLabel1.text = geoCacheItem1!.title!
+        closestGeoDistance1.text = String(Int(geoCacheManager.getDistanceToCacheInMiles(self.userLocation!, geoCacheItem1!)))
         self.requestSnapshotData(mapView: self.mkMapView,
-                                 coordinate:geoCacheItem1.coordinate,
+                                 coordinate:(geoCacheItem1?.coordinate)!,
                                  image: self.closestGeoSnapImage1,
                                  completionHandler:
             {
@@ -84,10 +82,10 @@ class TodayViewController: UIViewController, NCWidgetProviding {
                 }
         } )
         
-        closestGeoTitleLabel2.text = geoCacheItem2.title!
-        closestGeoDistance2.text = String(Int(geoCacheManager.getDistanceToCacheInMiles(self.userLocation!, geoCacheItem2)))
+        closestGeoTitleLabel2.text = geoCacheItem2?.title!
+        closestGeoDistance2.text = String(Int(geoCacheManager.getDistanceToCacheInMiles(self.userLocation!, geoCacheItem2!)))
         self.requestSnapshotData(mapView: self.mkMapView,
-                                 coordinate:geoCacheItem2.coordinate,
+                                 coordinate:(geoCacheItem2?.coordinate)!,
                                  image: self.closestGeoSnapImage2,
                                  completionHandler:
             {
@@ -97,10 +95,10 @@ class TodayViewController: UIViewController, NCWidgetProviding {
                 }
         } )
         
-        closestGeoTitleLabel3.text = geoCacheItem3.title!
-        closestGeoDistance3.text = String(Int(geoCacheManager.getDistanceToCacheInMiles(self.userLocation!, geoCacheItem3)))
+        closestGeoTitleLabel3.text = geoCacheItem3?.title!
+        closestGeoDistance3.text = String(Int(geoCacheManager.getDistanceToCacheInMiles(self.userLocation!, geoCacheItem3!)))
         self.requestSnapshotData(mapView: self.mkMapView,
-                                 coordinate:geoCacheItem3.coordinate,
+                                 coordinate:(geoCacheItem3?.coordinate)!,
                                  image: self.closestGeoSnapImage3,
                                  completionHandler:
             {
@@ -110,25 +108,16 @@ class TodayViewController: UIViewController, NCWidgetProviding {
                 }
         } )
         
-        if let test = self.lastFoundGeoCacheItem {
-            print("lastFoundGeoCacheItem is not nil?!")
-        } else {
-            print("lastFounGeoCacehItem is nil")
-        }
-        
-        //Use a string instead of integer so you can differntiate between proper returned vals
+        //Last Geo Found
         let lastGeoFoundId = userDefaults!.integer(forKey: "lastGeoFoundId")
-        if lastGeoFoundId != 0 { //0 is the default (invalid) id valuel
+        if lastGeoFoundId != 0 { //0 is the default (invalid) id value
             print(lastGeoFoundId)
             self.lastFoundGeoCacheItem = geoCacheManager.getGeoCacheItem(byId: lastGeoFoundId)
+        } else {
+            print("Nothing found yet")
         }
         
         //Set UI components:
-        if let test = self.lastFoundGeoCacheItem {
-            print("lastFoundGeoCacheItem is not nil?!")
-        } else {
-            print("lastFounGeoCacehItem is nil")
-        }
         if let lastFoundGeo = self.lastFoundGeoCacheItem {
             lastFoundDateLabel.text = lastFoundGeo.foundDate
             lastFoundTitleLabel.text = lastFoundGeo.title!
@@ -205,15 +194,15 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     }
     @IBAction func closestGeoButtonPressed1(_ sender: Any) {
 //        self.sendUrlCallback(geoCacheTitle: self.geoCacheItem1!.title!)
-        self.sendUrlCallback(geoCacheId: self.geoCacheIndex1!)
+        self.sendUrlCallback(geoCacheId: self.geoCacheItem1!.id!)
     }
     @IBAction func closestGeoButtonPressed2(_ sender: Any) {
 //        self.sendUrlCallback(geoCacheTitle: self.geoCacheItem2!.title!)
-                self.sendUrlCallback(geoCacheId: self.geoCacheIndex2!)
+                self.sendUrlCallback(geoCacheId: self.geoCacheItem2!.id!)
     }
     @IBAction func closestGeoButtonPressed3(_ sender: Any) {
 //        self.sendUrlCallback(geoCacheTitle: self.geoCacheItem3!.title!)
-                self.sendUrlCallback(geoCacheId: self.geoCacheIndex3!)
+                self.sendUrlCallback(geoCacheId: self.geoCacheItem3!.id!)
     }
     
  func sendUrlCallback(geoCacheId: Int) {

@@ -15,12 +15,6 @@ public class GeoCacheManager: NSObject {
     public var geoCacheItems: [GeoCacheItem] = []
     public var sortedGeoCacheItems: [GeoCacheItem] = []
     public let numberOfGeoCacheItems = 10
-    public var lastGeoCacheItemFound: GeoCacheItem? {
-        didSet {
-            let idOfLastFound = lastGeoCacheItemFound!.id!
-            userDefaults?.set(idOfLastFound, forKey: "lastGeoFoundId")
-        }
-    }
 
     public override init() {}
     
@@ -85,30 +79,38 @@ public class GeoCacheManager: NSObject {
                                            coordinate: CLLocationCoordinate2DMake(thanosLocation.coordinate.latitude, thanosLocation.coordinate.longitude))
         geoCacheItems.append(thanosGeoCache)
         sortedGeoCacheItems.append(thanosGeoCache)
-        
-
+    }
+    
+    
+    //get the latest Geo Caceh item
+    public func getLatestGeoCacheItem() -> GeoCacheItem? {
+        let lastGeoId = userDefaults!.integer(forKey: "lastGeoFoundId")
+        for geoCacheItem in geoCacheItems {
+            if geoCacheItem.id == lastGeoId {
+                return geoCacheItem
+            }
+        }
+        return nil
     }
     
     //helper fcn: get a GeoCacheItem based on its title (simplifies storing user_defaults data etc)
-    public func getGeoCacheItem(byTitle:String) -> GeoCacheItem {
+    public func getGeoCacheItem(byTitle:String) -> GeoCacheItem? {
         for geoCacheItem in geoCacheItems {
             if geoCacheItem.title! == byTitle {
                 return geoCacheItem
             }
         }
-        print("Couldn't find the right GeoCacheItem, so I'll return the first one I know about")
-        return geoCacheItems[0]
+        return nil
     }
     
     //helper fcn: get a GeoCacheItem based on its title (simplifies storing user_defaults data etc)
-    public func getGeoCacheItem(byId:Int) -> GeoCacheItem {
+    public func getGeoCacheItem(byId:Int) -> GeoCacheItem? {
         for geoCacheItem in geoCacheItems {
             if geoCacheItem.id! == byId {
                 return geoCacheItem
             }
         }
-        print("Couldn't find the right GeoCacheItem, so I'll return the first one I know about")
-        return geoCacheItems[0]
+        return nil
     }
     
     //helper fcn: get a GeoCacheItem based on its title (simplifies storing user_defaults data etc)
@@ -120,8 +122,7 @@ public class GeoCacheManager: NSObject {
             }
             count += 1
         }
-        print("Couldn't find the right GeoCacheItem, so I'll return the first one I know about")
-        return 0
+        return -1
     }
     
     

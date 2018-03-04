@@ -25,7 +25,10 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     var userLocation:CLLocation? {
         didSet {
-            print("Write to user defualts here")
+            print("User Location Set")
+            print("TODO: write to user defaults")
+//            let userDefaults = UserDefaults.init(suiteName: "group.edu.jhu.epp.spring2018.hw2")
+
         }
     }
     var lastClosestGeo:GeoCacheItem?

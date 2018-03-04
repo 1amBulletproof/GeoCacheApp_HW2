@@ -13,27 +13,15 @@ public enum GeoCacheStatus {
     case FOUND
     case NOTFOUND
 }
-//TODO: I'm not sure this should inherit from MKAnnotation but instead should be a MKMapItem?! or CLLocation?
-//TODO: need to write this information to user_defaults
+
 public class GeoCacheItem: NSObject, MKAnnotation {
     
-    //TODO: need image sanpshot value
-    //TODO: need image representing geoCache (or string name anyway)
     public var title:String?
     public var detail:String?
     public var coordinate: CLLocationCoordinate2D
     public var imagePath:String = "alert_something_broke"
-    public var found:GeoCacheStatus? {
-        didSet {
-            print("Write to user defaults here!")
-        }
-    }
+    public var found:GeoCacheStatus?
     public var foundDate:String?
-    {
-        didSet {
-            print("Write to user defaults here!")
-        }
-    }
     
     public init(imagePath:String, title:String, detail:String, coordinate: CLLocationCoordinate2D)
     {

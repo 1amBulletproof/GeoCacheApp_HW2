@@ -13,8 +13,13 @@ public class GeoCacheManager: NSObject {
     
     public var geoCacheItems: [GeoCacheItem] = []
     public var sortedGeoCacheItems: [GeoCacheItem] = []
-    public var lastGeoCacheItemFound: GeoCacheItem?
     public let numberOfGeoCacheItems = 10
+    public var lastGeoCacheItemFound: GeoCacheItem? {
+        didSet {
+            print("lastGeoCacheItemFound SET")
+            print("TODO: WRITE THIS VALUE TO USER DEFAULTS")
+        }
+    }
 
     
     public override init() {}

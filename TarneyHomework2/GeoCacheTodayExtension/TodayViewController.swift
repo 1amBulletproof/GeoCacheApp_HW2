@@ -11,7 +11,9 @@ import NotificationCenter
 import GeoCacheFramework
 
 class TodayViewController: UIViewController, NCWidgetProviding {
-        
+    
+    let expandedHeight = CGFloat(350.0)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -22,7 +24,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     func widgetActiveDisplayModeDidChange(_ activeDisplayMode: NCWidgetDisplayMode, withMaximumSize maxSize: CGSize) {
         let expanded = activeDisplayMode == .expanded
         if (expanded) {
-            self.preferredContentSize = CGSize(width:self.view.frame.size.width, height:400)
+            self.preferredContentSize = CGSize(width:self.view.frame.size.width, height:expandedHeight)
         } else {
             self.preferredContentSize = maxSize
         }

@@ -22,16 +22,17 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     let locationManager = CLLocationManager()
     let geoCacheManager:GeoCacheManager = GeoCacheManager()
     let regionRadius:CLLocationDistance = 1000.0
+    let userDefaults = UserDefaults.init(suiteName: "group.edu.jhu.epp.spring2018.hw2")
+    
+    var lastClosestGeo:GeoCacheItem?
     
     var userLocation:CLLocation? {
         didSet {
-            print("User Location Set")
-            print("TODO: write to user defaults")
-//            let userDefaults = UserDefaults.init(suiteName: "group.edu.jhu.epp.spring2018.hw2")
-
+            userDefaults!.set(userLocation!.coordinate.latitude.magnitude, forKey: "userLatitude")
+            userDefaults!.set(userLocation!.coordinate.longitude.magnitude, forKey: "userLongitude")
         }
     }
-    var lastClosestGeo:GeoCacheItem?
+
     
     override func viewDidLoad() {
         super.viewDidLoad()

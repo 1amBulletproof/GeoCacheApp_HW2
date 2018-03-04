@@ -34,10 +34,19 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     let mkMapView = MKMapView()
     
     let geoCacheManager = GeoCacheManager()
+    let userDefaults = UserDefaults.init(suiteName: "group.edu.jhu.epp.spring2018.hw2")
+    var userLocation:CLLocation?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.extensionContext?.widgetLargestAvailableDisplayMode = .expanded
+        
+        
+
+
+        let userLat = userDefaults!.double(forKey:"userLatitude")
+        let userLon = userDefaults!.double(forKey:"userLongitude")
+        userLocation = CLLocation(latitude: userLat, longitude: userLon)
         
         //Initialize GeoCacheItems
         geoCacheManager.initializeGeoCacheItems()

@@ -24,12 +24,21 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     let regionRadius:CLLocationDistance = 1000.0
     let userDefaults = UserDefaults.init(suiteName: "group.edu.jhu.epp.spring2018.hw2")
     
+//     var centerGeoId:String?
+    
     var lastClosestGeo:GeoCacheItem?
     
     var userLocation:CLLocation? {
         didSet {
-            userDefaults!.set(userLocation!.coordinate.latitude.magnitude, forKey: "userLatitude")
-            userDefaults!.set(userLocation!.coordinate.longitude.magnitude, forKey: "userLongitude")
+            let locationData = NSKeyedArchiver.archivedData(withRootObject: userLocation!)
+            userDefaults!.set(locationData, forKey: "userLocation")
+            
+            //test reading user defaults
+//            if let tmpLocationData = userDefaults?.data(forKey: "userLocation") {
+//                if let myLocation:CLLocation = NSKeyedUnarchiver.unarchiveObject(with: tmpLocationData) as? CLLocation {
+//                    print("User Location Read from Defaults is \(myLocation)")
+//                }
+//            }
         }
     }
 
@@ -57,6 +66,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     //Set values whenever view will appear
     override func viewWillAppear(_ animated: Bool) {
+
         //Ratio Found
         let numberOfGeoCacheItems = String(geoCacheManager.getNumberOfGeoCacheItems())
         let numberFound = String(geoCacheManager.getNumberOfGeoCacheFound())

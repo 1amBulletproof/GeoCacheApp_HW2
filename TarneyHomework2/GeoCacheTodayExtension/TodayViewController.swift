@@ -35,36 +35,62 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     
     let geoCacheManager = GeoCacheManager()
     let userDefaults = UserDefaults.init(suiteName: "group.edu.jhu.epp.spring2018.hw2")
-    var userLocation:CLLocation?
+    var userLocation:CLLocation? //user defaults info
+    var lastFoundGeoCacheItem:GeoCacheItem? //user defaults info
+    var geoCacheIndex1:  Int?
+    var geoCacheIndex2 : Int?
+    var geoCacheIndex3 : Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.extensionContext?.widgetLargestAvailableDisplayMode = .expanded
-        
-        
 
-
-        let userLat = userDefaults!.double(forKey:"userLatitude")
-        let userLon = userDefaults!.double(forKey:"userLongitude")
-        userLocation = CLLocation(latitude: userLat, longitude: userLon)
-        
         //Initialize GeoCacheItems
         geoCacheManager.initializeGeoCacheItems()
+
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        //Default value, hopefully overwritten by the user's location!
+        self.userLocation = CLLocation(latitude: 39.16, longitude: -76.89)
         
-        //TODO: Get dynamic data
-        //Get User Location
-        //Get Last Found GeoCacheItem
+//        //TODO: Get dynamic data
+//        let userLat:Double = userDefaults!.double(forKey:"userLatitude")
+//        closestGeoTitleLabel2.text = String(userLat)
+//        let userLon:Double = userDefaults!.double(forKey:"userLongitude")
+//        closestGeoTitleLabel3.text = String(userLon)
+//        self.userLocation = CLLocation(latitude: userLat, longitude: userLon)
+////                closestGeoTitleLabel2.text = String(self.userLocation!.coordinate.latitude)
+////                closestGeoTitleLabel3.text = String(self.userLocation!.coordinate.longitude)
+        if let tmpLocationData = userDefaults?.data(forKey: "userLocation") {
+            if let myLocation:CLLocation = NSKeyedUnarchiver.unarchiveObject(with: tmpLocationData) as? CLLocation {
+                self.userLocation = myLocation
+                print("User Location Read from Defaults is \(myLocation)")
+            }
+        }
+        
+//        //Use a string instead of integer so you can differntiate between proper returned vals
+//        if let lastGeoFoundIdStr = userDefaults!.string(forKey: "lastGeoFound") {
+//            let lastGeoFoundId = Int(lastGeoFoundIdStr)
+//            self.lastFoundGeoCacheItem = geoCacheManager.geoCacheItems[lastGeoFoundId!]
+//        }
+//
+
+        lastFoundDateLabel.text = String(self.userLocation!.coordinate.latitude)
+        lastFoundTitleLabel.text = String(self.userLocation!.coordinate.longitude)
+        
         
         //Get nearest 3 items (using the current location)
-        let userLocation = CLLocation(latitude: 40.72909, longitude: -74.00057) //TODO: replace w/ user location
-        geoCacheManager.sortGeoCacheItemsByDistance(givenLocation: userLocation)
+        geoCacheManager.sortGeoCacheItemsByDistance(givenLocation: self.userLocation!)
         let geoCacheItem1 = geoCacheManager.sortedGeoCacheItems[0]
+        self.geoCacheIndex1 = geoCacheManager.getGeoCacheIndex(byTitle: geoCacheItem1.title!)
         let geoCacheItem2 = geoCacheManager.sortedGeoCacheItems[1]
+        self.geoCacheIndex2 = geoCacheManager.getGeoCacheIndex(byTitle: geoCacheItem2.title!)
         let geoCacheItem3 = geoCacheManager.sortedGeoCacheItems[2]
+        self.geoCacheIndex3 = geoCacheManager.getGeoCacheIndex(byTitle: geoCacheItem3.title!)
         
         //Set all UI components:
-        //TODO: fix last found stuff
-        if let lastFoundGeo = geoCacheManager.lastGeoCacheItemFound {
+        if let lastFoundGeo = self.lastFoundGeoCacheItem {
             lastFoundDateLabel.text = lastFoundGeo.foundDate!
             lastFoundTitleLabel.text = lastFoundGeo.title!
             lastFoundImage.image = UIImage(named: lastFoundGeo.imagePath)
@@ -78,10 +104,13 @@ class TodayViewController: UIViewController, NCWidgetProviding {
                         self.lastFoundSnapImage.setImage(img, for: .normal)
                     }
             } )
+        } else {
+            lastFoundDateLabel.text = "None"
+            lastFoundTitleLabel.text = "None"
         }
-
+        
         closestGeoTitleLabel1.text = geoCacheItem1.title!
-        closestGeoDistance1.text = String(Int(geoCacheManager.getDistanceToCacheInMiles(userLocation, geoCacheItem1)))
+        closestGeoDistance1.text = String(Int(geoCacheManager.getDistanceToCacheInMiles(self.userLocation!, geoCacheItem1)))
         self.requestSnapshotData(mapView: self.mkMapView,
                                  coordinate:geoCacheItem1.coordinate,
                                  image: self.closestGeoSnapImage1,
@@ -92,9 +121,9 @@ class TodayViewController: UIViewController, NCWidgetProviding {
                     self.closestGeoSnapImage1.setImage(img, for: .normal)
                 }
         } )
-
+        
         closestGeoTitleLabel2.text = geoCacheItem2.title!
-        closestGeoDistance2.text = String(Int(geoCacheManager.getDistanceToCacheInMiles(userLocation, geoCacheItem2)))
+        closestGeoDistance2.text = String(Int(geoCacheManager.getDistanceToCacheInMiles(self.userLocation!, geoCacheItem2)))
         self.requestSnapshotData(mapView: self.mkMapView,
                                  coordinate:geoCacheItem2.coordinate,
                                  image: self.closestGeoSnapImage2,
@@ -105,9 +134,9 @@ class TodayViewController: UIViewController, NCWidgetProviding {
                     self.closestGeoSnapImage2.setImage(img, for: .normal)
                 }
         } )
-
+        
         closestGeoTitleLabel3.text = geoCacheItem3.title!
-        closestGeoDistance3.text = String(Int(geoCacheManager.getDistanceToCacheInMiles(userLocation, geoCacheItem3)))
+        closestGeoDistance3.text = String(Int(geoCacheManager.getDistanceToCacheInMiles(self.userLocation!, geoCacheItem3)))
         self.requestSnapshotData(mapView: self.mkMapView,
                                  coordinate:geoCacheItem3.coordinate,
                                  image: self.closestGeoSnapImage3,
@@ -118,7 +147,6 @@ class TodayViewController: UIViewController, NCWidgetProviding {
                     self.closestGeoSnapImage3.setImage(img, for: .normal)
                 }
         } )
-
     }
     
     
@@ -172,28 +200,27 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     
     //TODO: these each make a specifical URL callback
     @IBAction func lastGeoFoundButtonPressed(_ sender: Any) {
-        print("launching app with last item found")
+        self.sendUrlCallback(geoCacheId: 10)
     }
     @IBAction func closestGeoButtonPressed1(_ sender: Any) {
-        print("launching app with closestGeo1")
+//        self.sendUrlCallback(geoCacheTitle: self.geoCacheItem1!.title!)
+        self.sendUrlCallback(geoCacheId: self.geoCacheIndex1!)
     }
     @IBAction func closestGeoButtonPressed2(_ sender: Any) {
-        print("launching app with closestGeo2")
+//        self.sendUrlCallback(geoCacheTitle: self.geoCacheItem2!.title!)
+                self.sendUrlCallback(geoCacheId: self.geoCacheIndex2!)
     }
     @IBAction func closestGeoButtonPressed3(_ sender: Any) {
-        print("launching app with closestGeo3")
-        self.closestGeoTitleLabel3.text = "BUTTON PRESSED"
+//        self.sendUrlCallback(geoCacheTitle: self.geoCacheItem3!.title!)
+                self.sendUrlCallback(geoCacheId: self.geoCacheIndex3!)
     }
     
-    
-    
-/* HOW TO URL:
- func openButtonPressed(geoCacheID: Int) {
-    print("opening app")
-     let url = URL(string:("hw2://GEOCACHE_ID_OR_NAME")))
-     print("url is \(url!)")
-     self.extensionContext?.open(url!, completionHandler: {success in print("launch \(success)")})
+ func sendUrlCallback(geoCacheId: Int) {
+     let url = URL(string:("hw2://\(geoCacheId)"))
+//    let url = URL(string:("hw2://BLAH"))
+     self.extensionContext?.open(url!, completionHandler: {
+        success in
+            print("launch \(success)")})
     }
- */
     
 }

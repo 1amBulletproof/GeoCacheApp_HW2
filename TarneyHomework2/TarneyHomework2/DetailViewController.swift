@@ -46,7 +46,7 @@ class DetailViewController: UIViewController, MKMapViewDelegate {
         geoCacheImage.image = UIImage(named: geoCacheItem!.imagePath)
         
         //Found Switch Default State
-        if geoCacheItem!.found == GeoCacheStatus.NOTFOUND {
+        if geoCacheItem!.found == false {
             geoCacheSwitch.isOn = false;
             geoCacheFoundDate.text = "          "
         } else {
@@ -68,14 +68,14 @@ class DetailViewController: UIViewController, MKMapViewDelegate {
     //'FOUND' SWITCH HANDLER
     @IBAction func geoCacheFound(_ sender: UISwitch) {
         if sender.isOn {
-            geoCacheItem!.found = GeoCacheStatus.FOUND
+            geoCacheItem!.found = true
             geoCacheManager!.lastGeoCacheItemFound = geoCacheItem
             let formattedDate = getGeoCacheFoundDateAsString()
             geoCacheItem!.foundDate = formattedDate
             self.geoCacheFoundDate.text = formattedDate
             pinView!.pinTintColor = .green
         } else {
-            geoCacheItem!.found = GeoCacheStatus.NOTFOUND
+            geoCacheItem!.found = false
             geoCacheFoundDate.text = "        "
             pinView!.pinTintColor = .red
         }

@@ -9,29 +9,46 @@
 import UIKit
 import MapKit
 
-public enum GeoCacheStatus {
-    case FOUND
-    case NOTFOUND
-}
-
 public class GeoCacheItem: NSObject, MKAnnotation {
     
+    let userDefaults = UserDefaults.init(suiteName: "group.edu.jhu.epp.spring2018.hw2")
+    public var id:Int?
     public var title:String?
     public var detail:String?
     public var coordinate: CLLocationCoordinate2D
     public var imagePath:String = "alert_something_broke"
-    public var found:GeoCacheStatus?
-    public var foundDate:String?
     
-    public init(imagePath:String, title:String, detail:String, coordinate: CLLocationCoordinate2D)
+    public var found:Bool {
+        get {
+            return userDefaults!.bool(forKey: "found\(self.id!)")
+        }
+        set (newFoundValue) {
+            userDefaults!.set(newFoundValue, forKey: "found\(self.id!)")
+        }
+    }
+    
+    public var foundDate:String {
+        get {
+            return userDefaults!.string(forKey: "foundDate\(self.id!)")!
+        }
+        set (newFoundDate) {
+            return userDefaults!.set(newFoundDate, forKey: "foundDate\(self.id!)")
+        }
+    }
+    
+    public init(id:Int, imagePath:String, title:String, detail:String, coordinate: CLLocationCoordinate2D)
     {
+        self.coordinate = coordinate
+        super.init()
+        self.id = id
         self.imagePath = imagePath
         self.title = title
         self.detail = detail
-        self.coordinate = coordinate
-        self.found = .NOTFOUND
+
+        self.found = false
+        self.foundDate = ""
         
-        super.init()
+
     }
     
 }

@@ -124,7 +124,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             {
                 dequeuedView.annotation = annotation
                 view = dequeuedView
-                if (annotation.found == GeoCacheStatus.FOUND) {
+                if (annotation.found == true) {
                     view.pinTintColor = UIColor.green
                 } else {
                     view.pinTintColor = UIColor.red
@@ -134,7 +134,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             {
                 view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
                 view.canShowCallout = true
-                if (annotation.found == GeoCacheStatus.FOUND) {
+                if (annotation.found == true) {
                     view.pinTintColor = UIColor.green
                 } else {
                     view.pinTintColor = UIColor.red

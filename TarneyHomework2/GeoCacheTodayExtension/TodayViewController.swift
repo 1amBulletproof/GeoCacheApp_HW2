@@ -51,34 +51,15 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        //Default value, hopefully overwritten by the user's location!
+        //Default value, tho we stated the main app will always launch first, thus this value should ALWAYS be overwritten below
         self.userLocation = CLLocation(latitude: 39.16, longitude: -76.89)
         
-//        //TODO: Get dynamic data
-//        let userLat:Double = userDefaults!.double(forKey:"userLatitude")
-//        closestGeoTitleLabel2.text = String(userLat)
-//        let userLon:Double = userDefaults!.double(forKey:"userLongitude")
-//        closestGeoTitleLabel3.text = String(userLon)
-//        self.userLocation = CLLocation(latitude: userLat, longitude: userLon)
-////                closestGeoTitleLabel2.text = String(self.userLocation!.coordinate.latitude)
-////                closestGeoTitleLabel3.text = String(self.userLocation!.coordinate.longitude)
         if let tmpLocationData = userDefaults?.data(forKey: "userLocation") {
             if let myLocation:CLLocation = NSKeyedUnarchiver.unarchiveObject(with: tmpLocationData) as? CLLocation {
                 self.userLocation = myLocation
                 print("User Location Read from Defaults is \(myLocation)")
             }
         }
-        
-//        //Use a string instead of integer so you can differntiate between proper returned vals
-//        if let lastGeoFoundIdStr = userDefaults!.string(forKey: "lastGeoFound") {
-//            let lastGeoFoundId = Int(lastGeoFoundIdStr)
-//            self.lastFoundGeoCacheItem = geoCacheManager.geoCacheItems[lastGeoFoundId!]
-//        }
-//
-
-        lastFoundDateLabel.text = String(self.userLocation!.coordinate.latitude)
-        lastFoundTitleLabel.text = String(self.userLocation!.coordinate.longitude)
-        
         
         //Get nearest 3 items (using the current location)
         geoCacheManager.sortGeoCacheItemsByDistance(givenLocation: self.userLocation!)
@@ -89,26 +70,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         let geoCacheItem3 = geoCacheManager.sortedGeoCacheItems[2]
         self.geoCacheIndex3 = geoCacheManager.getGeoCacheIndex(byTitle: geoCacheItem3.title!)
         
-        //Set all UI components:
-        if let lastFoundGeo = self.lastFoundGeoCacheItem {
-            lastFoundDateLabel.text = lastFoundGeo.foundDate!
-            lastFoundTitleLabel.text = lastFoundGeo.title!
-            lastFoundImage.image = UIImage(named: lastFoundGeo.imagePath)
-            self.requestSnapshotData(mapView: self.mkMapView,
-                                     coordinate: lastFoundGeo.coordinate,
-                                     image: self.lastFoundSnapImage,
-                                     completionHandler:
-                {
-                    (mkMapSnapshot, error) in
-                    if let img = mkMapSnapshot?.image {
-                        self.lastFoundSnapImage.setImage(img, for: .normal)
-                    }
-            } )
-        } else {
-            lastFoundDateLabel.text = "None"
-            lastFoundTitleLabel.text = "None"
-        }
-        
+        //Set UI componenets
         closestGeoTitleLabel1.text = geoCacheItem1.title!
         closestGeoDistance1.text = String(Int(geoCacheManager.getDistanceToCacheInMiles(self.userLocation!, geoCacheItem1)))
         self.requestSnapshotData(mapView: self.mkMapView,
@@ -147,6 +109,45 @@ class TodayViewController: UIViewController, NCWidgetProviding {
                     self.closestGeoSnapImage3.setImage(img, for: .normal)
                 }
         } )
+        
+        if let test = self.lastFoundGeoCacheItem {
+            print("lastFoundGeoCacheItem is not nil?!")
+        } else {
+            print("lastFounGeoCacehItem is nil")
+        }
+        
+        //Use a string instead of integer so you can differntiate between proper returned vals
+        let lastGeoFoundId = userDefaults!.integer(forKey: "lastGeoFoundId")
+        if lastGeoFoundId != 0 { //0 is the default (invalid) id valuel
+            print(lastGeoFoundId)
+            self.lastFoundGeoCacheItem = geoCacheManager.getGeoCacheItem(byId: lastGeoFoundId)
+        }
+        
+        //Set UI components:
+        if let test = self.lastFoundGeoCacheItem {
+            print("lastFoundGeoCacheItem is not nil?!")
+        } else {
+            print("lastFounGeoCacehItem is nil")
+        }
+        if let lastFoundGeo = self.lastFoundGeoCacheItem {
+            lastFoundDateLabel.text = lastFoundGeo.foundDate
+            lastFoundTitleLabel.text = lastFoundGeo.title!
+            lastFoundImage.image = UIImage(named: lastFoundGeo.imagePath)
+            self.requestSnapshotData(mapView: self.mkMapView,
+                                     coordinate: lastFoundGeo.coordinate,
+                                     image: self.lastFoundSnapImage,
+                                     completionHandler:
+                {
+                    (mkMapSnapshot, error) in
+                    if let img = mkMapSnapshot?.image {
+                        self.lastFoundSnapImage.setImage(img, for: .normal)
+                    }
+            } )
+        } else {
+            lastFoundDateLabel.text = "None"
+            lastFoundTitleLabel.text = "None"
+        }
+        
     }
     
     

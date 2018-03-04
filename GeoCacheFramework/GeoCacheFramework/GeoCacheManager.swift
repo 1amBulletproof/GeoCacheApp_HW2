@@ -17,11 +17,8 @@ public class GeoCacheManager: NSObject {
     public let numberOfGeoCacheItems = 10
     public var lastGeoCacheItemFound: GeoCacheItem? {
         didSet {
-            let indexOfLastFound = getGeoCacheIndex(byTitle: lastGeoCacheItemFound!.title!)
-            userDefaults!.set(String(indexOfLastFound), forKey: "lastGeoFound")
-            print("Last Item Found = \(lastGeoCacheItemFound!.title)")
-            var testIndex = userDefaults?.string(forKey: "lastGeoFound")
-            print("Read index \(testIndex) from user defaults")
+            let idOfLastFound = lastGeoCacheItemFound!.id!
+            userDefaults?.set(idOfLastFound, forKey: "lastGeoFoundId")
         }
     }
 
@@ -30,61 +27,61 @@ public class GeoCacheManager: NSObject {
     public func initializeGeoCacheItems() {
         
         let strangeLocation = CLLocation(latitude: 40.72909, longitude: -74.00057)
-        let strangeGeoCache = GeoCacheItem(imagePath: "drStrange", title: "Dr. Strange", detail: "Sorcerer Supreme. Master of the mystical Arts. Wears a cape and crazy hair-do.",
+        let strangeGeoCache = GeoCacheItem(id:1, imagePath: "drStrange", title: "Dr. Strange", detail: "Sorcerer Supreme. Master of the mystical Arts. Wears a cape and crazy hair-do.",
                                            coordinate: CLLocationCoordinate2DMake(strangeLocation.coordinate.latitude, strangeLocation.coordinate.longitude))
         geoCacheItems.append(strangeGeoCache)
         sortedGeoCacheItems.append(strangeGeoCache)
 
         let msMarvelLocation = CLLocation(latitude: 42.34903, longitude: -71.06644)
-        let msMarvelGeoCache = GeoCacheItem(imagePath: "msMarvel", title: "Ms Marvel",  detail: "Ms Marvel, or Carol Danvers, packs a mean punch. If you are kree, make sure to avoid!",
+        let msMarvelGeoCache = GeoCacheItem(id:2, imagePath: "msMarvel", title: "Ms Marvel",  detail: "Ms Marvel, or Carol Danvers, packs a mean punch. If you are kree, make sure to avoid!",
                                            coordinate: CLLocationCoordinate2DMake(msMarvelLocation.coordinate.latitude, msMarvelLocation.coordinate.longitude))
         geoCacheItems.append(msMarvelGeoCache)
         sortedGeoCacheItems.append(msMarvelGeoCache)
 
         let antManLocation = CLLocation(latitude: 25.718211, longitude: -80.2694)
-        let antManGeoCache = GeoCacheItem(imagePath: "antMan", title: "Ant Man",  detail: "Pym can shrink to the size of ants, which is why he's called Ant-Man! Yeah, not the best name...",
+        let antManGeoCache = GeoCacheItem(id:3, imagePath: "antMan", title: "Ant Man",  detail: "Pym can shrink to the size of ants, which is why he's called Ant-Man! Yeah, not the best name...",
                                            coordinate: CLLocationCoordinate2DMake(antManLocation.coordinate.latitude, antManLocation.coordinate.longitude))
         geoCacheItems.append(antManGeoCache)
         sortedGeoCacheItems.append(antManGeoCache)
         
         let ironManLocation = CLLocation(latitude: 34.00511, longitude: -118.80626)
-        let ironManGeoCache = GeoCacheItem(imagePath: "ironMan", title: "Iron Man", detail: "Billionaire, philanthropist, playboy...and that's just when he's outside his suit of armor!",
+        let ironManGeoCache = GeoCacheItem(id:4, imagePath: "ironMan", title: "Iron Man", detail: "Billionaire, philanthropist, playboy...and that's just when he's outside his suit of armor!",
                                            coordinate: CLLocationCoordinate2DMake(ironManLocation.coordinate.latitude, ironManLocation.coordinate.longitude))
         geoCacheItems.append(ironManGeoCache)
         sortedGeoCacheItems.append(ironManGeoCache)
         
         let spiderManLocation = CLLocation(latitude: 40.71894, longitude: -73.84584)
-        let spiderManGeoCache = GeoCacheItem(imagePath: "spiderMan", title: "Spider Man", detail: "He's just looking out for the little guy. His sense of style might be lame but his powers aren't!",
+        let spiderManGeoCache = GeoCacheItem(id:5, imagePath: "spiderMan", title: "Spider Man", detail: "He's just looking out for the little guy. His sense of style might be lame but his powers aren't!",
                                            coordinate: CLLocationCoordinate2DMake(spiderManLocation.coordinate.latitude, spiderManLocation.coordinate.longitude))
         geoCacheItems.append(spiderManGeoCache)
         sortedGeoCacheItems.append(spiderManGeoCache)
         
         let starLordLocation = CLLocation(latitude: 38.4364, longitude: -92.5197)
-        let starLordGeoCache = GeoCacheItem(imagePath: "starLord", title: "Star-Lord", detail: "Mischevious, quick-witted, and always ready to party. Just don't take his mix-tape.",
+        let starLordGeoCache = GeoCacheItem(id:6, imagePath: "starLord", title: "Star-Lord", detail: "Mischevious, quick-witted, and always ready to party. Just don't take his mix-tape.",
                                            coordinate: CLLocationCoordinate2DMake(starLordLocation.coordinate.latitude, starLordLocation.coordinate.longitude))
         geoCacheItems.append(starLordGeoCache)
         sortedGeoCacheItems.append(starLordGeoCache)
         
         let cptAmericaLocation = CLLocation(latitude: 40.653, longitude: -73.94432)
-        let cptAmericaGeoCache = GeoCacheItem(imagePath: "cptAmerica", title: "Captain America", detail: "Just a kid from Brooklyn.",
+        let cptAmericaGeoCache = GeoCacheItem(id:7, imagePath: "cptAmerica", title: "Captain America", detail: "Just a kid from Brooklyn.",
                                            coordinate: CLLocationCoordinate2DMake(cptAmericaLocation.coordinate.latitude, cptAmericaLocation.coordinate.longitude))
         geoCacheItems.append(cptAmericaGeoCache)
         sortedGeoCacheItems.append(cptAmericaGeoCache)
         
         let hydraLocation = CLLocation(latitude: 38.88988, longitude: -77.00917)
-        let hydraGeoCache = GeoCacheItem(imagePath: "hydra", title: "Hydra HQ", detail: "Big fan of facism and tax breaks. HAIL HYDRA!",
+        let hydraGeoCache = GeoCacheItem(id:8, imagePath: "hydra", title: "Hydra HQ", detail: "Big fan of facism and tax breaks. HAIL HYDRA!",
                                            coordinate: CLLocationCoordinate2DMake(hydraLocation.coordinate.latitude, hydraLocation.coordinate.longitude))
         geoCacheItems.append(hydraGeoCache)
         sortedGeoCacheItems.append(hydraGeoCache)
         
         let killmongerLocation = CLLocation(latitude: 37.81021, longitude: -122.24357)
-        let killmongerGeoCache = GeoCacheItem(imagePath: "killmonger", title: "Eric Killmonger", detail: "Has been waiting LITERALLY his whole life for this. Better hurry, he's known to burn the whole place down",
+        let killmongerGeoCache = GeoCacheItem(id:9, imagePath: "killmonger", title: "Eric Killmonger", detail: "Has been waiting LITERALLY his whole life for this. Better hurry, he's known to burn the whole place down",
                                            coordinate: CLLocationCoordinate2DMake(killmongerLocation.coordinate.latitude, killmongerLocation.coordinate.longitude))
         geoCacheItems.append(killmongerGeoCache)
         sortedGeoCacheItems.append(killmongerGeoCache)
         
         let thanosLocation = CLLocation(latitude: 38.89767, longitude: -77.03657)
-        let thanosGeoCache = GeoCacheItem(imagePath: "thanos", title: "Thanos", detail: "Hiding under copious amounts of bronzer, Thanos just wants to 'Make the Galaxy Great Again'",
+        let thanosGeoCache = GeoCacheItem(id:10, imagePath: "thanos", title: "Thanos", detail: "Hiding under copious amounts of bronzer, Thanos just wants to 'Make the Galaxy Great Again'",
                                            coordinate: CLLocationCoordinate2DMake(thanosLocation.coordinate.latitude, thanosLocation.coordinate.longitude))
         geoCacheItems.append(thanosGeoCache)
         sortedGeoCacheItems.append(thanosGeoCache)
@@ -96,6 +93,17 @@ public class GeoCacheManager: NSObject {
     public func getGeoCacheItem(byTitle:String) -> GeoCacheItem {
         for geoCacheItem in geoCacheItems {
             if geoCacheItem.title! == byTitle {
+                return geoCacheItem
+            }
+        }
+        print("Couldn't find the right GeoCacheItem, so I'll return the first one I know about")
+        return geoCacheItems[0]
+    }
+    
+    //helper fcn: get a GeoCacheItem based on its title (simplifies storing user_defaults data etc)
+    public func getGeoCacheItem(byId:Int) -> GeoCacheItem {
+        for geoCacheItem in geoCacheItems {
+            if geoCacheItem.id! == byId {
                 return geoCacheItem
             }
         }
@@ -121,7 +129,7 @@ public class GeoCacheManager: NSObject {
     public func getNumberOfGeoCacheFound() -> Int {
         var count = 0
         for geoCache in self.geoCacheItems {
-            if (geoCache.found == .FOUND) {
+            if (geoCache.found == true) {
                 count = count + 1
             }
         }
@@ -159,7 +167,7 @@ public class GeoCacheManager: NSObject {
     //Get the closest UNFOUND geo (for directions!)
     public func getClosestUnfoundGeoCache() -> GeoCacheItem {
         for idx in 0 ..< numberOfGeoCacheItems {
-            if sortedGeoCacheItems[idx].found == .NOTFOUND {
+            if sortedGeoCacheItems[idx].found == false {
                 return sortedGeoCacheItems[idx]
             }
         }

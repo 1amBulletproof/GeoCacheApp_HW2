@@ -50,17 +50,18 @@ class DetailViewController: UIViewController, MKMapViewDelegate {
             geoCacheSwitch.isOn = false;
             geoCacheFoundDate.text = "          "
         } else {
-            setGeoCacheFoundDate( date:geoCacheItem!.foundDate!)
+            self.geoCacheFoundDate.text = geoCacheItem!.foundDate
             geoCacheSwitch.isOn = true;
         }
     }
     
     //Helper Fcn
-    func setGeoCacheFoundDate(date:Date) {
+    func getGeoCacheFoundDateAsString() -> String {
+        let date = Date()
         let formatter = DateFormatter()
         formatter.dateFormat = "MM/dd/YYYY"
         let formattedDate = formatter.string(from: date)
-        self.geoCacheFoundDate.text = formattedDate
+        return formattedDate
     }
     
 
@@ -68,12 +69,10 @@ class DetailViewController: UIViewController, MKMapViewDelegate {
     @IBAction func geoCacheFound(_ sender: UISwitch) {
         if sender.isOn {
             geoCacheItem!.found = GeoCacheStatus.FOUND
-
             geoCacheManager!.lastGeoCacheItemFound = geoCacheItem
-
-            let date = Date()
-            geoCacheItem!.foundDate = date
-            setGeoCacheFoundDate(date: date)
+            let formattedDate = getGeoCacheFoundDateAsString()
+            geoCacheItem!.foundDate = formattedDate
+            self.geoCacheFoundDate.text = formattedDate
             pinView!.pinTintColor = .green
         } else {
             geoCacheItem!.found = GeoCacheStatus.NOTFOUND

@@ -28,7 +28,7 @@ public class GeoCacheItem: NSObject, MKAnnotation {
             print("Write to user defaults here!")
         }
     }
-    public var foundDate:Date?
+    public var foundDate:String?
     {
         didSet {
             print("Write to user defaults here!")

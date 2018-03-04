@@ -7,20 +7,113 @@
 //
 
 import UIKit
+import MapKit
 import NotificationCenter
 import GeoCacheFramework
 
 class TodayViewController: UIViewController, NCWidgetProviding {
     
+    @IBOutlet weak var lastFoundDateLabel: UILabel!
+    @IBOutlet weak var lastFoundTitleLabel: UILabel!
+    @IBOutlet weak var lastFoundImage: UIImageView!
+    @IBOutlet weak var lastFoundSnapImage: UIButton!
+    
+    @IBOutlet weak var closestGeoTitleLabel1: UILabel!
+    @IBOutlet weak var closestGeoDistance1: UILabel!
+    @IBOutlet weak var closestGeoSnapImage1: UIButton!
+    
+    @IBOutlet weak var closestGeoTitleLabel2: UILabel!
+    @IBOutlet weak var closestGeoDistance2: UILabel!
+    @IBOutlet weak var closestGeoSnapImage2: UIButton!
+    
+    @IBOutlet weak var closestGeoTitleLabel3: UILabel!
+    @IBOutlet weak var closestGeoDistance3: UILabel!
+    @IBOutlet weak var closestGeoSnapImage3: UIButton!
+    
     let expandedHeight = CGFloat(350.0)
+    let mkMapView = MKMapView()
+    
+    let geoCacheManager = GeoCacheManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         self.extensionContext?.widgetLargestAvailableDisplayMode = .expanded
+        
+        //Initialize GeoCacheItems
+        geoCacheManager.initializeGeoCacheItems()
+        
+        //TODO: Get dynamic data
+        //Get User Location
+        //Get Last Found GeoCacheItem
+        
+        //Get nearest 3 items (using the current location)
+        let userLocation = CLLocation(latitude: 40.72909, longitude: -74.00057) //TODO: replace w/ user location
+        geoCacheManager.sortGeoCacheItemsByDistance(givenLocation: userLocation)
+        let geoCacheItem1 = geoCacheManager.sortedGeoCacheItems[0]
+        let geoCacheItem2 = geoCacheManager.sortedGeoCacheItems[1]
+        let geoCacheItem3 = geoCacheManager.sortedGeoCacheItems[2]
+        
+        //Set all UI components:
+        //TODO: fix last found stuff
+        if let lastFoundGeo = geoCacheManager.lastGeoCacheItemFound {
+            lastFoundDateLabel.text = lastFoundGeo.foundDate!
+            lastFoundTitleLabel.text = lastFoundGeo.title!
+            lastFoundImage.image = UIImage(named: lastFoundGeo.imagePath)
+            self.requestSnapshotData(mapView: self.mkMapView,
+                                     coordinate: lastFoundGeo.coordinate,
+                                     image: self.lastFoundSnapImage,
+                                     completionHandler:
+                {
+                    (mkMapSnapshot, error) in
+                    if let img = mkMapSnapshot?.image {
+                        self.lastFoundSnapImage.setImage(img, for: .normal)
+                    }
+            } )
+        }
+
+        closestGeoTitleLabel1.text = geoCacheItem1.title!
+        closestGeoDistance1.text = String(Int(geoCacheManager.getDistanceToCacheInMiles(userLocation, geoCacheItem1)))
+        self.requestSnapshotData(mapView: self.mkMapView,
+                                 coordinate:geoCacheItem1.coordinate,
+                                 image: self.closestGeoSnapImage1,
+                                 completionHandler:
+            {
+                (mkMapSnapshot, error) in
+                if let img = mkMapSnapshot?.image {
+                    self.closestGeoSnapImage1.setImage(img, for: .normal)
+                }
+        } )
+
+        closestGeoTitleLabel2.text = geoCacheItem2.title!
+        closestGeoDistance2.text = String(Int(geoCacheManager.getDistanceToCacheInMiles(userLocation, geoCacheItem2)))
+        self.requestSnapshotData(mapView: self.mkMapView,
+                                 coordinate:geoCacheItem2.coordinate,
+                                 image: self.closestGeoSnapImage2,
+                                 completionHandler:
+            {
+                (mkMapSnapshot, error) in
+                if let img = mkMapSnapshot?.image {
+                    self.closestGeoSnapImage2.setImage(img, for: .normal)
+                }
+        } )
+
+        closestGeoTitleLabel3.text = geoCacheItem3.title!
+        closestGeoDistance3.text = String(Int(geoCacheManager.getDistanceToCacheInMiles(userLocation, geoCacheItem3)))
+        self.requestSnapshotData(mapView: self.mkMapView,
+                                 coordinate:geoCacheItem3.coordinate,
+                                 image: self.closestGeoSnapImage3,
+                                 completionHandler:
+            {
+                (mkMapSnapshot, error) in
+                if let img = mkMapSnapshot?.image {
+                    self.closestGeoSnapImage3.setImage(img, for: .normal)
+                }
+        } )
 
     }
     
+    
+    //Set the size of widget
     func widgetActiveDisplayModeDidChange(_ activeDisplayMode: NCWidgetDisplayMode, withMaximumSize maxSize: CGSize) {
         let expanded = activeDisplayMode == .expanded
         if (expanded) {
@@ -44,6 +137,46 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         
         completionHandler(NCUpdateResult.newData)
     }
+    
+    //SNAPSHOT
+    func requestSnapshotData(mapView: MKMapView, coordinate: CLLocationCoordinate2D, image: UIView, completionHandler: @escaping (MKMapSnapshot?, Error?) -> ())
+    {
+        let snapShotOptions = MKMapSnapshotOptions()
+
+        let widthInMeters = 1000
+        let heightInMeters = 1000
+        snapShotOptions.region = MKCoordinateRegionMakeWithDistance(
+            coordinate,
+            CLLocationDistance(widthInMeters),
+            CLLocationDistance(heightInMeters))
+
+        snapShotOptions.size = image.frame.size
+        snapShotOptions.scale = UIScreen.main.scale
+
+        //Get SnapShot
+        let snapshotter = MKMapSnapshotter(options: snapShotOptions)
+
+        //Use snapshot
+        snapshotter.start(completionHandler: completionHandler)
+    }
+    
+    
+    //TODO: these each make a specifical URL callback
+    @IBAction func lastGeoFoundButtonPressed(_ sender: Any) {
+        print("launching app with last item found")
+    }
+    @IBAction func closestGeoButtonPressed1(_ sender: Any) {
+        print("launching app with closestGeo1")
+    }
+    @IBAction func closestGeoButtonPressed2(_ sender: Any) {
+        print("launching app with closestGeo2")
+    }
+    @IBAction func closestGeoButtonPressed3(_ sender: Any) {
+        print("launching app with closestGeo3")
+        self.closestGeoTitleLabel3.text = "BUTTON PRESSED"
+    }
+    
+    
     
 /* HOW TO URL:
  func openButtonPressed(geoCacheID: Int) {

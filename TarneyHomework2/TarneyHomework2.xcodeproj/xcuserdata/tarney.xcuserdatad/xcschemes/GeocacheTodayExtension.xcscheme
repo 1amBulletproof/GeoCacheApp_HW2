@@ -83,16 +83,26 @@
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES"
       launchAutomaticallySubstyle = "2">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <RemoteRunnable
+         runnableDebuggingMode = "2"
+         BundleIdentifier = "com.apple.springboard">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A12FCEF12043375300B23C97"
-            BuildableName = "TarneyHomework2.app"
-            BlueprintName = "TarneyHomework2"
+            BlueprintIdentifier = "A1B91B5A204B2C9E0000A685"
+            BuildableName = "GeocacheTodayExtension.appex"
+            BlueprintName = "GeocacheTodayExtension"
             ReferencedContainer = "container:TarneyHomework2.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </RemoteRunnable>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "A1B91B5A204B2C9E0000A685"
+            BuildableName = "GeocacheTodayExtension.appex"
+            BlueprintName = "GeocacheTodayExtension"
+            ReferencedContainer = "container:TarneyHomework2.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>

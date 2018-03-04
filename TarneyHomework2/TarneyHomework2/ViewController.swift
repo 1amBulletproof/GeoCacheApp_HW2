@@ -49,7 +49,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             mkMapView.addAnnotation(geoCache)
         }
         
-//        self.requestDirections(toCache: geoCacheManager.geoCacheItems[0])
     }
     
     //Set values whenever view will appear
@@ -63,10 +62,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         //Last Item Found:
         if let lastGeoCacheItem = geoCacheManager.lastGeoCacheItemFound {
             lastItemFound.text = lastGeoCacheItem.title!
-            let formatter = DateFormatter()
-            formatter.dateFormat = "MM/dd/YYYY"
-            let formattedDate = formatter.string(from: lastGeoCacheItem.foundDate!)
-            lastItemFoundDate.text = formattedDate
+            lastItemFoundDate.text = lastGeoCacheItem.foundDate
         }
         
         //Anytime the view is going to load (i.e. the only time a found state change is possible), get directions to closest UNFOUND geoCacheItem

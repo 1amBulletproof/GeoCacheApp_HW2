@@ -41,8 +41,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-        print(url.absoluteString)
-        return false
+        print("URL IS \(url.absoluteString)")
+        print("URL host is \(url.host!)")
+        let vc = (self.window!.rootViewController as! UINavigationController).topViewController as! ViewController
+        vc.centerGeoCacheItemIndex = Int(url.host!)!
+        return true
     }
 
 

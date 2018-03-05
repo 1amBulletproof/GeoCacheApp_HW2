@@ -25,6 +25,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     let userDefaults = UserDefaults.init(suiteName: "group.edu.jhu.epp.spring2018.hw2")
     var lastClosestGeo:GeoCacheItem?
     
+    var centerGeoCacheItemIndex:Int?
+    
     var userLocation:CLLocation? {
         didSet {
             let locationData = NSKeyedArchiver.archivedData(withRootObject: userLocation!)
@@ -32,17 +34,19 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         }
     }
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         geoCacheManager.initializeGeoCacheItems()
 
+        print("asking for permission")
         locationManager.requestWhenInUseAuthorization()
         if (CLLocationManager.authorizationStatus() == .authorizedWhenInUse)
         {
+            print("successful location manager setting")
             locationManager.delegate = self
             locationManager.startUpdatingLocation()
         }
+        print(CLLocationManager.authorizationStatus().rawValue)
 
         mkMapView.delegate = self
         mkMapView.showsUserLocation = true
@@ -62,6 +66,17 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         let ratioText = "\(numberFound)/\(numberOfGeoCacheItems)"
         ratioFound.text = ratioText
         
+        //if the center on Index is set, center the map and then UNSET the value!
+        print("View Will Appear SANITY CHECK")
+        if let centerGeoId = self.centerGeoCacheItemIndex {
+            print("centerGeoId = \(centerGeoId)")
+            if let centerGeo = geoCacheManager.getGeoCacheItem(byId: centerGeoId) {
+                print("Got geo to match center")
+                self.centerMapOnLocation(location: centerGeo.coordinate)
+            }
+            self.centerGeoCacheItemIndex = nil //So we're not ALWAYS centered on this guy
+        }
+        
         //Last Item Found:
         if let lastGeoCacheItem = geoCacheManager.getLatestGeoCacheItem() {
             lastItemFound.text = lastGeoCacheItem.title!
@@ -79,6 +94,13 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             }
         }
 
+    }
+    
+    //Center map on location (for URL callback)
+    func centerMapOnLocation(location: CLLocationCoordinate2D)
+    {
+        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location, regionRadius*2.0, regionRadius*2.0)
+        mkMapView.setRegion(coordinateRegion, animated: true)
     }
     
     
@@ -213,11 +235,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
 
 
  
- //    func centerMapOnLocation(location: CLLocation)
- //    {
- //        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, regionRadius*2.0, regionRadius*2.0)
- //        mkMapView.setRegion(coordinateRegion, animated: true)
- //    }
+
 
 
 

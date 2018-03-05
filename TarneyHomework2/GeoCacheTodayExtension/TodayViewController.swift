@@ -190,7 +190,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     
     //TODO: these each make a specifical URL callback
     @IBAction func lastGeoFoundButtonPressed(_ sender: Any) {
-        self.sendUrlCallback(geoCacheId: 10)
+        self.sendUrlCallback(geoCacheId: lastFoundGeoCacheItem!.id! )
     }
     @IBAction func closestGeoButtonPressed1(_ sender: Any) {
 //        self.sendUrlCallback(geoCacheTitle: self.geoCacheItem1!.title!)

@@ -25,7 +25,14 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     let userDefaults = UserDefaults.init(suiteName: "group.edu.jhu.epp.spring2018.hw2")
     var lastClosestGeo:GeoCacheItem?
     
-    var centerGeoCacheItemIndex:Int?
+    var centerGeoCacheItemIndex:Int? {
+        didSet {
+                if let centerGeo = geoCacheManager.getGeoCacheItem(byId: centerGeoCacheItemIndex!) {
+                        print("Got geo to match center")
+                        self.centerMapOnLocation(location: centerGeo.coordinate)
+                }
+            }
+        }
     
     var userLocation:CLLocation? {
         didSet {
@@ -68,17 +75,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         let numberFound = String(geoCacheManager.getNumberOfGeoCacheFound())
         let ratioText = "\(numberFound)/\(numberOfGeoCacheItems)"
         ratioFound.text = ratioText
-        
-        //if the center on Index is set, center the map and then UNSET the value!
-        print("View Will Appear SANITY CHECK")
-        if let centerGeoId = self.centerGeoCacheItemIndex {
-            print("centerGeoId = \(centerGeoId)")
-            if let centerGeo = geoCacheManager.getGeoCacheItem(byId: centerGeoId) {
-                print("Got geo to match center")
-                self.centerMapOnLocation(location: centerGeo.coordinate)
-            }
-            self.centerGeoCacheItemIndex = nil //So we're not ALWAYS centered on this guy
-        }
         
         //Last Item Found:
         if let lastGeoCacheItem = geoCacheManager.getLatestGeoCacheItem() {

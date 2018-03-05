@@ -45,6 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("URL host is \(url.host!)")
         let vc = (self.window!.rootViewController as! UINavigationController).topViewController as! ViewController
         vc.centerGeoCacheItemIndex = Int(url.host!)!
+//        vc.viewWillAppear(true)
         return true
     }
 

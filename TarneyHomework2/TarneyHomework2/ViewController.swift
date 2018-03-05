@@ -38,15 +38,12 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         super.viewDidLoad()
         geoCacheManager.initializeGeoCacheItems()
 
-        print("asking for permission")
+        locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
         if (CLLocationManager.authorizationStatus() == .authorizedWhenInUse)
         {
-            print("successful location manager setting")
-            locationManager.delegate = self
             locationManager.startUpdatingLocation()
         }
-        print(CLLocationManager.authorizationStatus().rawValue)
 
         mkMapView.delegate = self
         mkMapView.showsUserLocation = true
@@ -55,6 +52,12 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             mkMapView.addAnnotation(geoCache)
         }
         
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if status == .authorizedWhenInUse {
+            locationManager.startUpdatingLocation()
+        }
     }
     
     //Set values whenever view will appear

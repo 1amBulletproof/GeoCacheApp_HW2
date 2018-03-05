@@ -139,6 +139,15 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                 } else {
                     view.pinTintColor = UIColor.red
                 }
+                view.calloutOffset = CGPoint(x: -8, y: 8)
+                var locationLabel = UILabel()
+                locationLabel.text =
+                "\(annotation.coordinate.latitude) \(annotation.coordinate.longitude)"
+                view.detailCalloutAccessoryView = locationLabel
+                view.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+                var smallImg = UIImageView(frame: CGRect.init(x: 0, y: 0, width: 50, height: 50))
+                smallImg.image = UIImage(named: annotation.imagePath)
+                view.leftCalloutAccessoryView = smallImg
             }
             else
             {
@@ -149,9 +158,15 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                 } else {
                     view.pinTintColor = UIColor.red
                 }
-                view.calloutOffset = CGPoint(x: -5, y: 5)
+                view.calloutOffset = CGPoint(x: -8, y: 8)
+                var locationLabel = UILabel()
+                locationLabel.text =
+                "\(annotation.coordinate.latitude) \(annotation.coordinate.longitude)"
+                view.detailCalloutAccessoryView = locationLabel
                 view.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
-                view.leftCalloutAccessoryView = UILabel()
+                var smallImg = UIImageView(frame: CGRect.init(x: 0, y: 0, width: 50, height: 50))
+                smallImg.image = UIImage(named: annotation.imagePath)
+                view.leftCalloutAccessoryView = smallImg
             }
             return view
         }
